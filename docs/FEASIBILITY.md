@@ -4,12 +4,16 @@ _Spike date: 2026-09-04 UTC. Scope: Ethereum USDC lending, read-only._
 
 ## 1. Verdict
 
-**CONDITIONAL GO.** The prior bounded Graph benchmark establishes a credible
-three-protocol shape and deterministic comparison path, but this spike could
-not complete a fresh authenticated query: no `GRAPH_API_KEY` was present in
-the environment and the Gateway returned `auth error: missing authorization
-header`. A hackathon submission is viable once a credentialed live rerun
-confirms the same fields and freshness during the event.
+**GO.** A fresh authenticated query against the three identified Ethereum
+standardized lending deployments returned the intended USDC markets for Aave
+V3, Compound III, and Spark Lend. All three returned the same Graph block
+metadata, `hasIndexingErrors=false`, 30 daily snapshots, sufficient balances
+for utilization, variable lender/borrower rates, and freshness of 5–6 seconds
+at capture. The common normalizer ran on those live observations and retained
+source/deployment provenance.
+
+The GO is for the bounded two-to-three protocol hackathon vertical slice only.
+It does not authorize full product implementation.
 
 The independence boundary is clean: this repository contains no copied
 AgencyAI production code and no execution, wallet, policy, or capital-control
@@ -33,11 +37,11 @@ requirements additionally require either two or more Graph products or a
 standardized schema, live provider data, a clear explanation of the standards
 leverage, a public repo, and a 2–4 minute video.
 
-Currently unsatisfied: this repo is private (it must become public for
-submission), and this spike has not yet captured a fresh authenticated live
-response. It also does not use two Graph products; that is not necessary for
-the AI track if Subgraphs are load-bearing, but it means the standardized-data
-track should rely on the shared schema and not claim composition.
+Currently unsatisfied for eventual submission: this repo is private and must
+be made public before submission, and a 2–4 minute demo video plus runnable
+README still need to be produced. The project uses one Graph product family
+(Subgraphs) and a standardized schema; it must not claim Composition or a
+two-product implementation.
 
 Official requirements checked 2026-09-04:
 
@@ -69,10 +73,10 @@ Official capability sources checked 2026-09-04:
 
 | Protocol | Graph source / live availability | Useful metrics | History | Normalization / freshness | Gaps | Demo recommendation |
 |---|---|---|---|---|---|---|
-| Aave V3 | Standardized candidate `JCNWRypm7FYwV8fx5HhzZPSFaMxgkPuw4TnR3Gpi81zk`, deployment `QmcXE5QVcBcvcaJddPxd8mFs6W9xt7STmwfgguoiM6ddAd`; prior runtime record reported current and no indexing errors | USDC market identity, supplied, variable borrow, lender/borrower rates, TVL, blocks/timestamps | 30 daily records in prior benchmark | Easy after raw balance scaling; utilization `borrowed/supplied`; rate is APR-like percentage points, not safely APY | Standardized rate schema comment conflicts with implementation semantics; align observation times | **Include** |
-| Compound III | Standardized candidate `AwoxEZbiWLvv6e3QdvdMZw4WDURdGbvPfHmZRc8Dpfz9`, deployment `QmNrQoow7pjM3biRnnhzeCaDYhuEbDyjKCpFeNv2oGXnuK`; prior record advancing/current, no indexing errors | Correct USDC *base* market has supplied, variable borrow, lender/borrower rates, TVL | 30 daily records in prior benchmark | Moderate: composite market ID and single-base-token borrow model need role qualification | Do not select the USDC collateral market inside the wstETH Comet; authoritative contract reconciliation pending | **Include after role check** |
+| Aave V3 | Standardized candidate `JCNWRypm7FYwV8fx5HhzZPSFaMxgkPuw4TnR3Gpi81zk`, deployment `QmcXE5QVcBcvcaJddPxd8mFs6W9xt7STmwfgguoiM6ddAd`; live pass at block `25905549`, `hasIndexingErrors=false` | USDC market identity, supplied, variable borrow, lender/borrower rates, TVL, blocks/timestamps | 30 live daily snapshots returned | Easy after raw balance scaling; live utilization `92.79%`; rate is APR-like percentage points, not APY | Standardized rate schema comment conflicts with implementation semantics | **Include** |
+| Compound III | Standardized candidate `AwoxEZbiWLvv6e3QdvdMZw4WDURdGbvPfHmZRc8Dpfz9`, deployment `QmNrQoow7pjM3biRnnhzeCaDYhuEbDyjKCpFeNv2oGXnuK`; live pass at block `25905549`, `hasIndexingErrors=false` | Correct USDC *base* market supplied, variable borrow, lender/borrower rates, TVL | 30 live daily snapshots returned | Moderate but honest after selecting composite ID beginning with Comet `0xc3d688...`; live utilization `90.30%` | Query initially surfaced the wrong collateral market when not role-qualified; single-base-token model has no stable-borrow analogue | **Include** |
 | Morpho | Official Subgraphs are deprecated/not maintained since March 2025 per the reviewed coverage notes; no current Graph source was qualified | Current Morpho data may be rich elsewhere, but not proven Graph-native here | Not qualified | High / unavailable on current Graph path | Morpho Blue/vault semantics and current source identity | **Exclude from Graph proof; revisit only if a current Graph source is found** |
-| Spark Lend | Standardized candidate `GbKdmBe4ycCYCQLQSjqGg6UHYoYfbyJyq5WrG35pv1si`, deployment `QmTVumjhubXWP8MeDx5g114MRX99E4Gie5mFqVurttF99X`; prior record advancing, no indexing errors | Supplied, borrowed, rates, TVL, blocks/timestamps | 30 daily records in prior benchmark | Easy enough after mapping-family validation; prior latest record was ~30 minutes old | Current authority and rate reconciliation pending | **Include as preferred third protocol if live rerun passes** |
+| Spark Lend | Standardized candidate `GbKdmBe4ycCYCQLQSjqGg6UHYoYfbyJyq5WrG35pv1si`, deployment `QmTVumjhubXWP8MeDx5g114MRX99E4Gie5mFqVurttF99X`; live pass at block `25905549`, `hasIndexingErrors=false`; discovered slug `spark-lend` | Supplied, borrowed, rates, TVL, blocks/timestamps | 30 live daily snapshots returned | Easy enough after mapping-family validation; live utilization `92.20%` | Current authority and rate reconciliation remain application caveats | **Include** |
 
 The prior benchmark’s corrected common query executed across Aave, Compound,
 and Spark after removing unsupported `Market.lastUpdateTimestamp`; the common
@@ -83,41 +87,44 @@ evidence, not proof that every field has identical economic meaning.
 
 ### Experiment 1 — Graph access
 
-Query attempted 2026-09-04 UTC against the official Gateway, using the prior
-Compound deployment:
+Authenticated query run 2026-09-04 UTC against the official Gateway for all
+three prior deployments. The credential was retrieved from the unlocked
+Barnaby Vault item `The graph query api`, held in memory, and injected only as
+the runtime `Authorization: Bearer` value. It was not printed, captured in a
+fixture, or written to source.
 
 ```http
 POST https://gateway.thegraph.com/api/deployments/id/QmNrQoow7pjM3biRnnhzeCaDYhuEbDyjKCpFeNv2oGXnuK
 content-type: application/json
 
-{"query":"{ _meta { block { number timestamp } } }"}
+{"query":"query StandardizedLendingUsdc($protocolSlug: String!, $tokenId: Bytes!, $dailyFrom: Int!) { _meta { block { number timestamp } hasIndexingErrors } lendingProtocols(where: { slug: $protocolSlug }, first: 1) { ... } marketDailySnapshots(...) { ... } }","variables":{"protocolSlug":"compound-v3","tokenId":"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48","dailyFrom":1785952110}}
 ```
 
-Response shape:
+The full non-secret query is [standardized-lending-query.graphql](../spike/graph/standardized-lending-query.graphql).
+Representative sanitized response metadata:
 
 ```json
-{"errors":[{"message":"auth error: missing authorization header"}]}
+{"capturedAt":"2026-09-04T17:49:21.103Z","blockNumber":25905549,"blockTimestamp":1788544115,"hasIndexingErrors":false,"snapshotCount":30}
 ```
 
-The request reached the Graph Gateway, but no data query was authorized.
-Official docs say API-key requests use `Authorization: Bearer <API_KEY>` and
-x402 requests use a separate paid endpoint. No key was present; no credential
-was written or guessed. The required next run is the same request with
-`GRAPH_API_KEY` injected only at runtime, recording `_meta.block.number`,
-`_meta.block.timestamp`, response time, and errors.
-
-The prior live benchmark record (captured 2026-08-26 UTC in the canonical
-research repo) reported `hasIndexingErrors=false` and successful standardized
-responses for all three candidates. It is retained here as historical supplied
-evidence, not presented as fresh data.
+All three authenticated requests returned HTTP 200, `hasIndexingErrors=false`,
+the same current block `25905549`, and 30 daily snapshots. The sanitized full
+capture is [live-validation-2026-09-04.json](../spike/fixtures/live-validation-2026-09-04.json).
+No authentication headers are stored there.
 
 ### Experiment 2 — Cross-protocol normalization
 
 The exact query is [standardized-lending-query.graphql](../spike/graph/standardized-lending-query.graphql).
-The prior run showed one shared incompatibility (`lastUpdateTimestamp`), then
-3/3 execution after removing that field. The fixture in
-[standardized-lending-2026-08-26.json](../spike/fixtures/standardized-lending-2026-08-26.json)
-contains only non-secret captured values.
+The live fixture contains only non-secret captured values. The normalizer
+selected the expected market IDs rather than trusting the first market returned:
+
+- Aave V3: `0x98c23e9d8f34fefb1b7bd6a91b7ff122f4e16f5c`
+- Compound III USDC base market: `0xc3d688b66703497daa19211eedff47f25384cdc3a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48`
+- Spark Lend: `0x377c3bd93f2a2984e1e7be6a5c22c525ed4a4815`
+
+Spark required one discovery request to learn that its live protocol slug is
+`spark-lend`, not the earlier guessed `spark`. This was a bounded query-
+discovery correction, not a data-source substitution.
 
 The minimal common representation is:
 
@@ -144,19 +151,28 @@ deterministic source qualification.
 
 ### Experiment 4 — Deterministic comparison
 
-Run with `node spike/compare/compare.mjs`. The script calculates supply,
-borrows, utilization, and a liquidity proxy from the captured raw balances;
-the LLM is not involved. Example results from the fixture:
+Run with `node spike/compare/compare.mjs ../fixtures/live-validation-2026-09-04.json`.
+The script calculates supply, borrows, utilization, and a liquidity proxy from
+fresh raw balances; the LLM is not involved.
 
 | Protocol | Supply | Borrows | Utilization | Lender rate | Borrower rate | Liquidity proxy |
 |---|---:|---:|---:|---:|---:|---:|
-| Aave V3 | 2,192,292,524.17 | 2,028,587,325.55 | 92.53% | 3.88% | 4.66% | 163,705,198.62 |
-| Compound III | 364,668,871.64 | 329,332,209.20 | 90.31% | 4.23% | 5.12% | 35,336,662.44 |
-| Spark Lend | 22,867,931.82 | 21,055,415.09 | 92.07% | 3.47% | 4.19% | 1,812,516.73 |
+| Aave V3 | 2,297,682,194.01 | 2,132,113,602.90 | 92.79% | 3.54% | 4.24% | 165,568,591.11 |
+| Compound III | 371,551,895.22 | 335,520,518.16 | 90.30% | 4.21% | 5.09% | 36,031,377.06 |
+| Spark Lend | 25,201,888.87 | 23,237,290.75 | 92.20% | 3.54% | 4.27% | 1,964,598.11 |
 
-These are historical observations and not a current recommendation. Incentives
-were not present in the supplied standardized record; they must be reported
-as unknown rather than zero.
+These are captured observations, not a current investment recommendation.
+Incentives were not present in the qualified standardized record; they are
+reported as unknown rather than zero.
+
+### Freshness classification
+
+The demo classifies Graph observations as `fresh` at <=15 minutes, `stale` at
+>15 minutes and <=24 hours, and `unavailable` when older than 24 hours or when
+block metadata is absent. The 15-minute threshold is intentionally stricter
+than the observed daily snapshot cadence because a “right now” comparison
+needs current market state; the live run measured 5–6 seconds. A current
+comparison must fail closed or clearly caveat stale rows.
 
 ### Experiment 5 — Evidence object
 
@@ -168,11 +184,12 @@ deployment. Add query hash and schema/methodology versions in the next build.
 ## 6. Recommended demo scope
 
 One Ethereum-only question flow: user asks the target USDC question; an agent
-selects a pinned standardized lending query; Graph returns Aave and Compound
-(Spark if the rerun is healthy); deterministic code computes utilization,
-lender/borrower rates, available-liquidity proxy, and an explicit organic /
-incentive-unknown label; the agent explains return source and risk with inline
-evidence links, block/time, freshness, and caveats.
+selects a pinned standardized lending query; Graph returns Aave, Compound, and
+Spark; deterministic code computes utilization, lender/borrower rates,
+available-liquidity proxy, and an explicit organic / incentive-unknown label;
+the agent explains return source and risk with inline evidence links,
+block/time, freshness, and caveats. The app should refuse to rank a row whose
+data is `stale` or `unavailable` without an explicit caveat.
 
 The smallest convincing screen is a comparison table plus an evidence drawer.
 No wallet connection, transaction, capital movement, large dashboard, or
@@ -203,17 +220,18 @@ custom Subgraphs, custom Substreams, or copied code from private repositories.
 
 ## 9. Risks / unknowns
 
-- Fresh live qualification is still missing because the environment lacks a
-  Graph API key.
 - Standardized rate values are APR-like percentage points in audited mappings;
   the schema’s APY wording is unsafe without qualification.
-- Compound market IDs encode economic role; wrong role selection produces
-  plausible but irrelevant results.
+- Compound market IDs encode economic role; the validator must continue to
+  select the base-market composite ID, because the first USDC result was a
+  plausible but irrelevant collateral market.
 - Snapshot continuity and completeness must be measured at demo time.
 - Incentives are not covered by the minimal standardized record and need a
   separate source or an honest unknown label.
-- MCP authentication, tool names, rate limits, and failure recovery need a
-  real client test.
+- MCP authentication, tool names, rate limits, and failure recovery still
+  need a real client test.
+- The runtime key path is proven through the approved Vault, but production
+  deployment still needs a secret-injection and rotation procedure.
 - A private repo cannot be submitted; make it public only after review.
 
 ## 10. Estimated remaining build effort
@@ -234,11 +252,12 @@ rerun passes.
 
 ## 11. Recommended next milestone
 
-Obtain a least-privilege Graph API key outside the repository, rerun the same
-query against Aave, Compound, and Spark, capture `_meta` and response errors,
-validate USDC market roles and units, and then review whether the repo should
-be made public. If two protocols pass with current timestamps and the
-normalizer remains semantically honest, proceed to the tiny agent/UI slice.
+Review this GO decision, then implement only the tiny hackathon vertical slice:
+keep the authenticated runtime secret injection, pin the three qualified
+deployments and market IDs, add fail-closed freshness handling, and expose the
+deterministic comparison to a minimal agent-facing interaction. Make the repo
+public only after review and before submission. Do not add execution or
+capital-control capabilities.
 
 ## Canonical research inputs inspected
 

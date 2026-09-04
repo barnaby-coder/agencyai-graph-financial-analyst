@@ -1,9 +1,33 @@
-import fixture from "../fixtures/standardized-lending-2026-08-26.json" with { type: "json" };
+import fs from "node:fs/promises";
+
+const inputPath = process.argv[2] ?? "../fixtures/standardized-lending-2026-08-26.json";
+const raw = JSON.parse(await fs.readFile(new URL(inputPath, import.meta.url), "utf8"));
+const fixture = raw.protocols ? {
+  capturedAt: raw.capturedAt,
+  source: "Fresh authenticated Graph Gateway response",
+  chain: "ethereum",
+  asset: "USDC",
+  decimals: 6,
+  markets: raw.protocols.filter((p) => p.status === "pass").map((p) => ({
+    protocol: p.protocol,
+    market: p.market.id,
+    suppliedRaw: p.market.suppliedRaw,
+    borrowedRaw: p.market.borrowedRaw,
+    supplyRatePct: Number(p.market.supplyRatePct),
+    borrowRatePct: Number(p.market.borrowRatePct),
+    blockNumber: p.blockNumber,
+    observedAt: new Date(Number(p.blockTimestamp) * 1000).toISOString(),
+    freshnessSeconds: p.freshnessSeconds,
+    subgraphId: p.subgraphId,
+    deploymentId: p.deploymentId
+  }))
+} : raw;
 
 const scale = 10 ** fixture.decimals;
 const rows = fixture.markets.map((m) => {
   const supply = Number(m.suppliedRaw) / scale;
   const borrows = Number(m.borrowedRaw) / scale;
+  const freshness = m.freshnessSeconds == null ? "historical" : m.freshnessSeconds <= 900 ? "fresh" : m.freshnessSeconds <= 86400 ? "stale" : "unavailable";
   return {
     protocol: m.protocol,
     chain: fixture.chain,
@@ -18,6 +42,7 @@ const rows = fixture.markets.map((m) => {
     liquidityProxy: supply - borrows,
     timestamp: m.observedAt,
     blockNumber: m.blockNumber,
+    freshness,
     evidence: { source: "The Graph standardized lending deployment", subgraphId: m.subgraphId, deploymentId: m.deploymentId }
   };
 });

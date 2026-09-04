@@ -1,0 +1,162 @@
+{
+  "capturedAt": "2026-09-04T17:49:21.103Z",
+  "gateway": "https://gateway.thegraph.com/api",
+  "protocols": [
+    {
+      "protocol": "Aave V3",
+      "subgraphId": "JCNWRypm7FYwV8fx5HhzZPSFaMxgkPuw4TnR3Gpi81zk",
+      "deploymentId": "QmcXE5QVcBcvcaJddPxd8mFs6W9xt7STmwfgguoiM6ddAd",
+      "slug": "aave-v3",
+      "expectedMarketId": "0x98c23e9d8f34fefb1b7bd6a91b7ff122f4e16f5c",
+      "requestedAt": "2026-09-04T17:49:19.954Z",
+      "usedSlug": "aave-v3",
+      "status": "pass",
+      "httpStatus": 200,
+      "blockNumber": 25905552,
+      "blockTimestamp": 1788544151,
+      "hasIndexingErrors": false,
+      "market": {
+        "id": "0x98c23e9d8f34fefb1b7bd6a91b7ff122f4e16f5c",
+        "name": "Aave Ethereum USDC",
+        "inputToken": {
+          "id": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+          "symbol": "USDC",
+          "decimals": 6
+        },
+        "outputToken": {
+          "id": "0x98c23e9d8f34fefb1b7bd6a91b7ff122f4e16f5c",
+          "symbol": "aEthUSDC",
+          "decimals": 6
+        },
+        "suppliedRaw": "2297682194008782",
+        "borrowedRaw": "2132113602895820",
+        "supplyRatePct": "3.544653068427127",
+        "borrowRatePct": "4.2445916366358482",
+        "rates": [
+          {
+            "rate": "0",
+            "side": "BORROWER",
+            "type": "STABLE"
+          },
+          {
+            "rate": "4.2445916366358482",
+            "side": "BORROWER",
+            "type": "VARIABLE"
+          },
+          {
+            "rate": "3.544653068427127",
+            "side": "LENDER",
+            "type": "VARIABLE"
+          }
+        ]
+      },
+      "freshnessSeconds": 9,
+      "snapshotCount": 30,
+      "discovery": null
+    },
+    {
+      "protocol": "Compound III",
+      "subgraphId": "AwoxEZbiWLvv6e3QdvdMZw4WDURdGbvPfHmZRc8Dpfz9",
+      "deploymentId": "QmNrQoow7pjM3biRnnhzeCaDYhuEbDyjKCpFeNv2oGXnuK",
+      "slug": "compound-v3",
+      "expectedMarketId": "0xc3d688b66703497daa19211eedff47f25384cdc3a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+      "requestedAt": "2026-09-04T17:49:20.267Z",
+      "usedSlug": "compound-v3",
+      "status": "pass",
+      "httpStatus": 200,
+      "blockNumber": 25905552,
+      "blockTimestamp": 1788544151,
+      "hasIndexingErrors": false,
+      "market": {
+        "id": "0xc3d688b66703497daa19211eedff47f25384cdc3a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "name": "Compound V3 USDC - USD Coin",
+        "inputToken": {
+          "id": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+          "symbol": "USDC",
+          "decimals": 6
+        },
+        "outputToken": {
+          "id": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+          "symbol": "USDC",
+          "decimals": 6
+        },
+        "suppliedRaw": "371551895222473",
+        "borrowedRaw": "335520518159431",
+        "supplyRatePct": "4.2066764319456",
+        "borrowRatePct": "5.088892071024",
+        "rates": [
+          {
+            "rate": "5.088892071024",
+            "side": "BORROWER",
+            "type": "VARIABLE"
+          },
+          {
+            "rate": "4.2066764319456",
+            "side": "LENDER",
+            "type": "VARIABLE"
+          }
+        ]
+      },
+      "freshnessSeconds": 10,
+      "snapshotCount": 30,
+      "discovery": null
+    },
+    {
+      "protocol": "Spark Lend",
+      "subgraphId": "GbKdmBe4ycCYCQLQSjqGg6UHYoYfbyJyq5WrG35pv1si",
+      "deploymentId": "QmTVumjhubXWP8MeDx5g114MRX99E4Gie5mFqVurttF99X",
+      "slug": "spark",
+      "expectedMarketId": "0x377c3bd93f2a2984e1e7be6a5c22c525ed4a4815",
+      "requestedAt": "2026-09-04T17:49:20.567Z",
+      "usedSlug": "spark-lend",
+      "status": "pass",
+      "httpStatus": 200,
+      "blockNumber": 25905552,
+      "blockTimestamp": 1788544151,
+      "hasIndexingErrors": false,
+      "market": {
+        "id": "0x377c3bd93f2a2984e1e7be6a5c22c525ed4a4815",
+        "name": "Spark USDC",
+        "inputToken": {
+          "id": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+          "symbol": "USDC",
+          "decimals": 6
+        },
+        "outputToken": {
+          "id": "0x377c3bd93f2a2984e1e7be6a5c22c525ed4a4815",
+          "symbol": "spUSDC",
+          "decimals": 6
+        },
+        "suppliedRaw": "25201888866976",
+        "borrowedRaw": "23237290753323",
+        "supplyRatePct": "3.5417941559900835",
+        "borrowRatePct": "4.2682326657813139",
+        "rates": [
+          {
+            "rate": "0",
+            "side": "BORROWER",
+            "type": "STABLE"
+          },
+          {
+            "rate": "4.2682326657813139",
+            "side": "BORROWER",
+            "type": "VARIABLE"
+          },
+          {
+            "rate": "3.5417941559900835",
+            "side": "LENDER",
+            "type": "VARIABLE"
+          }
+        ]
+      },
+      "freshnessSeconds": 10,
+      "snapshotCount": 30,
+      "discovery": {
+        "slugs": [
+          "spark-lend"
+        ],
+        "matchedSlug": "spark-lend"
+      }
+    }
+  ]
+}
