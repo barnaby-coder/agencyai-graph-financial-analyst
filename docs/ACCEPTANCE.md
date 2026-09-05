@@ -5,6 +5,7 @@
 - Acceptance date: 2026-09-05 UTC
 - Tested branch: `build/model-backed-analyst`
 - Baseline: `25c793a1cd866345b9edad03908cd81b43ff4833`
+- Implementation head: `b73f494`
 - Verdict: **PASS WITH MINOR ISSUES**
 
 This milestone adds the smallest model-backed interpretation path while
@@ -102,7 +103,7 @@ future visibility change.
 npm test                                  20 passing tests
 node --check src/**/*.mjs public/app.js   passed
 GET /api/health                           passed; modelConfigured=false without model env
-deterministic fallback smoke              passed through live Graph application path
+deterministic fallback smoke              passed through injected and failure-path tests
 authenticated Graph smoke                 3/3 protocols, fresh, no indexing errors (accepted baseline)
 live model smoke                          not run: no approved model credential/provider
 public-release scan                       passed: no credential-shaped values or private references found
