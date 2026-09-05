@@ -32,8 +32,8 @@ by credential-free tests.
 
 ## Current Graph and protocol status
 
-The final authenticated application smoke test used block `25910488`, with
-block timestamp `1788603611` and approximately 12 seconds of age at capture.
+The final authenticated application smoke test used block `25910611`, with
+block timestamp `1788605087` and approximately 11 seconds of age at capture.
 All three deployments returned fresh observations and
 `hasIndexingErrors=false`. The Graph query, protocol qualification, and
 deterministic normalizer remained unchanged apart from shorter model-facing
@@ -68,6 +68,49 @@ did not issue an execution recommendation or label the neutral rates as APY.
 The AI acceptance issue is therefore resolved for the temporary validation
 configuration. The Coding Plan endpoint is not approved as the final public
 deployment choice; general Z.ai API selection remains a release decision.
+
+## OpenAI comparison validation
+
+Validated 2026-09-05 UTC using OpenAI's Responses API at
+`https://api.openai.com/v1/responses` with model `gpt-5.6-luna`. The OpenAI
+credential was supplied only to the server process. The normal application
+request returned HTTP 200 with `mode: "model"`; all three observations were
+fresh, had `hasIndexingErrors=false`, and the evidence references
+`aave-v3`, `compound-v3`, and `spark-lend` resolved successfully.
+
+The Graph capture used block `25910611` (block timestamp `1788605087`), with
+approximately 11 seconds of freshness at capture. Aave V3, Compound III's
+qualified USDC base market, and Spark Lend all passed semantic qualification.
+Deterministic supply, borrows, utilization, supply/borrow rate, liquidity
+proxy, unknown incentives, provenance, and freshness were produced before the
+model request.
+
+The OpenAI request took approximately 10.3 seconds in the measured model run;
+the final repeated `/api/analyze` request took approximately 13.6 seconds
+total. The response reported 2,143 input
+tokens, 975 output tokens, 0 reasoning tokens, and 3,118 total tokens. Using
+the model page's listed $0.20 per million input tokens and $1.20 per million
+output tokens, the approximate model cost for this request was $0.0016; this
+is a runtime comparison estimate, not product cost accounting. See the
+[GPT-5.6 Luna model documentation](https://developers.openai.com/api/docs/models/gpt-5.6-luna)
+(accessed 2026-09-05 UTC).
+
+The actual answer was materially useful and grounded: it compared the three
+observed rate fields, utilization, liquidity proxies, and rate spreads; it
+explained that observed lender return is represented by the supply-rate field
+and borrowing activity; it preserved unknown incentives; and it stated that
+the fields are not established APY. It did not introduce execution language,
+unsupported protocol facts, or an unsupported ranking. Compared with the
+approximately 32-second Z.ai `glm-5.3-flash` result, OpenAI was materially
+faster and at least equally reliable on structured output and evidence
+grounding, with somewhat more explicit limitations.
+
+The deterministic fallback was separately exercised with model configuration
+disabled. It returned HTTP 200, `status: "ready"`, `mode: "fallback"`, and all
+three qualified observations remained usable. Existing Z.ai chat-completions
+compatibility remains covered by the original adapter test and was not
+removed. The Coding Plan endpoint remains a temporary validation configuration;
+final provider and endpoint selection is still a release decision.
 
 ## Evidence UX
 
@@ -104,12 +147,15 @@ future visibility change.
 ## Validation commands and results
 
 ```text
-npm test                                  20 passing tests
+npm test                                  23 passing tests
 node --check src/**/*.mjs public/app.js   passed
-GET /api/health                           passed; modelConfigured=false without model env
-deterministic fallback smoke              passed with model configuration disabled; 3 observations
-authenticated Graph smoke                 3/3 protocols, fresh, no indexing errors; block 25910488
+GET /api/health                           passed; OpenAI model configured only when its env is present
+deterministic fallback smoke              passed with model configuration disabled; 3 observations; mode=fallback
+authenticated Graph smoke                 3/3 protocols, fresh, no indexing errors; block 25910611
 live Z.ai application smoke               HTTP 200, mode=model, grounded refs resolved, ~32 seconds
+live OpenAI application smoke             HTTP 200, mode=model, grounded refs resolved, ~13.6 seconds total
+OpenAI structured output                   passed; 2,143 input / 975 output / 0 reasoning tokens
+OpenAI browser-secret check                passed; no model or Graph credential in response
 public-release scan                       passed: no credential-shaped values or private references found
 git diff --check                          passed
 ```
@@ -117,8 +163,11 @@ git diff --check                          passed
 ## Known limitations
 
 - Z.ai Coding Plan was used only as a temporary validation endpoint; final
-  endpoint selection remains open.
-- Model latency was approximately 32 seconds for the full evidence packet.
+  endpoint selection remains open. OpenAI's Responses API is now the faster
+  validated comparison path, but release configuration still requires review.
+- OpenAI latency was approximately 10.3 seconds for the model request and
+  13.6 seconds end to end in the final repeat; latency and cost can vary by
+  account and load.
 - The optional JSON model endpoint is intentionally small and expects the
   documented request/response contract.
 - Incentive yield remains unknown in the qualified standardized source.
@@ -128,13 +177,14 @@ git diff --check                          passed
 
 ## Required before public release
 
-1. Decide whether the final runtime should use Z.ai’s general API rather than
-   the temporary Coding Plan endpoint.
+1. Decide whether the final runtime should use OpenAI `gpt-5.6-luna` or Z.ai’s
+   general API rather than the temporary Coding Plan endpoint.
 2. Run a final secret scan and review the complete public diff.
 3. Decide repository visibility explicitly, then prepare the demo materials.
 
 ## Recommended next milestone
 
-Review the grounded live Z.ai result and choose the final approved endpoint.
-Then prepare only the final public README/demo artifacts; do not add more Graph
-products, protocols, chains, execution, wallets, or control-plane features.
+Review the grounded live OpenAI and Z.ai results and choose the final approved
+endpoint. Then prepare only the final public README/demo artifacts; do not add
+more Graph products, protocols, chains, execution, wallets, or control-plane
+features.

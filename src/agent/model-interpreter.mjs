@@ -4,17 +4,28 @@ Explain observed facts separately from interpretation. Cite the supplied evidenc
 Never calculate or alter primary metrics, call rates APY, turn unknown incentives into zero, add protocol facts, rank stale data, or recommend deposits, borrowing, trading, execution, or transactions.
 If data is partial, stale, unavailable, or an incentive is unknown, say so clearly. Do not expose chain-of-thought. Return only the requested JSON object.`;
 
+const MODEL_POINT_SCHEMA = {
+  type: "object",
+  required: ["text", "evidenceRefs"],
+  properties: {
+    text: { type: "string" },
+    evidenceRefs: { type: "array", items: { type: "string" } }
+  },
+  additionalProperties: false
+};
+
 export const MODEL_OUTPUT_SCHEMA = Object.freeze({
   type: "object",
-  required: ["summary", "observations", "comparison", "returnSource", "risksAndLimitations"],
+  required: ["summary", "observations", "comparison", "returnSource", "risksAndLimitations", "evidenceRefs"],
   properties: {
-    summary: { type: "object", required: ["text", "evidenceRefs"] },
-    observations: { type: "array", items: { type: "object", required: ["text", "evidenceRefs"] } },
-    comparison: { type: "array", items: { type: "object", required: ["text", "evidenceRefs"] } },
-    returnSource: { type: "array", items: { type: "object", required: ["text", "evidenceRefs"] } },
-    risksAndLimitations: { type: "array", items: { type: "object", required: ["text", "evidenceRefs"] } },
+    summary: MODEL_POINT_SCHEMA,
+    observations: { type: "array", items: MODEL_POINT_SCHEMA },
+    comparison: { type: "array", items: MODEL_POINT_SCHEMA },
+    returnSource: { type: "array", items: MODEL_POINT_SCHEMA },
+    risksAndLimitations: { type: "array", items: MODEL_POINT_SCHEMA },
     evidenceRefs: { type: "array", items: { type: "string" } }
-  }
+  },
+  additionalProperties: false
 });
 
 const POINT_KEYS = ["observations", "comparison", "returnSource", "risksAndLimitations"];

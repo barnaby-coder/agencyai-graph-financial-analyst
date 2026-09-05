@@ -12,7 +12,7 @@ The core question is simple:
 
 The intended first experience is a bounded research task such as:
 
-> I have USDC. What productive lending opportunities can we observe on Ethereum, where does the return come from, what changed recently, and what risks should I understand?
+> I have USDC. What productive lending opportunities can we observe on Ethereum, where does the return come from, how do the opportunities compare, and what risks should I understand?
 
 The system should be able to:
 
@@ -153,7 +153,7 @@ A strong result should make clear:
 
 - what opportunities were observed;
 - where the return comes from;
-- what changed;
+- how the current observations differ;
 - which risks matter;
 - how current the evidence is;
 - which Graph sources support the answer;
@@ -203,15 +203,25 @@ GRAPH_API_KEY=<runtime-secret> npm start
 Open http://127.0.0.1:4173. The key is server-only and must never be committed
 or sent to the browser. `npm test` runs the credential-free unit tests.
 
-Optional model interpretation uses a server-side JSON model endpoint:
+Optional model interpretation uses a server-side model endpoint. OpenAI uses the
+Responses API when `OPENAI_API_KEY` is configured:
+
+```bash
+OPENAI_API_KEY=<runtime-secret> OPENAI_MODEL=gpt-5.6-luna npm start
+```
+
+`OPENAI_API_URL` can override the default Responses endpoint. The existing
+OpenAI-compatible chat-completions transport remains available for other
+providers:
 
 ```bash
 MODEL_API_URL=<approved-model-endpoint> MODEL_API_KEY=<runtime-secret> npm start
 ```
 
-`MODEL_NAME` is optional. The endpoint receives `{ model, system, input,
-responseFormat }` and must return the documented structured model output (or a
-JSON string in `output_text`); it never receives raw Graph responses. Missing
+`MODEL_NAME` is optional for that transport. OpenAI receives the compact
+evidence packet through `instructions`, `input`, and strict Responses API JSON
+schema output; the compatible transport receives `messages` and
+`response_format`. Neither transport receives raw Graph responses. Missing
 model configuration, provider failure, invalid output, or unresolved evidence
 references selects the deterministic fallback.
 

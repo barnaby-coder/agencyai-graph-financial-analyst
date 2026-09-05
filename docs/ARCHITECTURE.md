@@ -31,27 +31,32 @@ construction. `src/agent/model-interpreter.mjs` builds a compact packet from
 those deterministic results. It excludes raw Graph responses and supplies
 stable evidence IDs before model invocation.
 
-`src/agent/interpreter.mjs` accepts a provider-neutral `generate` function. A
-configured JSON model endpoint receives the packet and returns a structured
-summary plus evidence-backed points. The application validates the output
-shape, rejects unknown evidence IDs and unsupported APY/execution claims, and
-then renders the answer. Any missing model configuration, timeout, provider
-failure, malformed output, or grounding failure uses the deterministic
-fallback. The model never owns arithmetic, market qualification, freshness,
-or execution decisions.
+`src/agent/interpreter.mjs` accepts a provider-neutral `generate` function. The
+model client has two transport implementations: the OpenAI Responses API uses
+`instructions`, `input`, and strict JSON-schema output; the existing
+OpenAI-compatible path uses chat-completions `messages` and `response_format`.
+Both receive the same compact packet and return a structured summary plus
+evidence-backed points. The application validates the output shape, rejects
+unknown evidence IDs and unsupported APY/execution claims, and then renders
+the answer. Any missing model configuration, timeout, provider failure,
+malformed output, or grounding failure uses the deterministic fallback. The
+model never owns arithmetic, market qualification, freshness, or execution
+decisions.
 
-The optional HTTP adapter is deliberately transport-thin: it sends a JSON
-request containing the model name, system instructions, compact `input`
-packet, and response schema. The endpoint may return the object directly or as
-JSON text in `output_text`. This keeps provider selection outside the financial
-analysis contract and avoids adding an agent framework.
+The optional HTTP adapters are deliberately transport-thin and provider-neutral
+at the financial contract. OpenAI is selected when `OPENAI_API_KEY` is present;
+otherwise the existing `MODEL_API_URL`, `MODEL_API_KEY`, and `MODEL_NAME`
+configuration selects the compatible chat-completions transport. The OpenAI
+request does not enable tools or external capabilities and opts out of response
+storage. Provider failures never change the deterministic analysis.
 
 Rates are named `supplyRatePct` and `borrowRatePct`, because the standardized
 source is qualified as annualized percentage-point / APR-like data rather than
 silently labeled APY. Incentives remain the literal value `unknown`.
 
-The optional model settings are `MODEL_API_URL`, `MODEL_API_KEY`, and
-`MODEL_NAME`; they are read only on the server. `MODEL_API_KEY` is never
+The optional OpenAI settings are `OPENAI_API_KEY`, `OPENAI_API_URL`, and
+`OPENAI_MODEL`; the compatible transport uses `MODEL_API_URL`, `MODEL_API_KEY`,
+and `MODEL_NAME`. They are read only on the server. Credentials are never
 returned to the browser or included in model input beyond the transport
 authorization header.
 

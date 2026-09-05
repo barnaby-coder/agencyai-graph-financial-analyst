@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { buildEvidencePacket, validateModelOutput } from "../src/agent/model-interpreter.mjs";
-import { createJsonModelGenerator } from "../src/agent/model-client.mjs";
+import { createJsonModelGenerator, createModelGenerator, createOpenAIResponsesGenerator } from "../src/agent/model-client.mjs";
 import { createInterpreter } from "../src/agent/interpreter.mjs";
 
 const source = {
@@ -86,4 +86,37 @@ test("HTTP generator sends only the model packet and never exposes its credentia
 test("HTTP generator timeout is explicit", async () => {
   const generator = createJsonModelGenerator({ endpoint: "https://model.test", apiKey: "secret-test-key", timeoutMs: 5, fetchImpl: (_url, options) => new Promise((_, reject) => options.signal.addEventListener("abort", () => { const error = new Error("aborted"); error.name = "AbortError"; reject(error); })) });
   await assert.rejects(() => generator({ packet: buildEvidencePacket(analysis) }), /timed out/);
+});
+
+test("OpenAI Responses generator requests strict structured output without raw Graph data or credentials", async () => {
+  let request;
+  const generator = createOpenAIResponsesGenerator({ endpoint: "https://api.openai.com/v1/responses", apiKey: "secret-openai-key", model: "gpt-5.6-luna", fetchImpl: async (_url, options) => {
+    request = options;
+    return { ok: true, status: 200, json: async () => ({ model: "gpt-5.6-luna", output_text: JSON.stringify(valid()), usage: { input_tokens: 12, output_tokens: 34 } }) };
+  } });
+  const result = await generator({ packet: buildEvidencePacket(analysis) });
+  assert.equal(result.summary.text, "The observation is current.");
+  const requestBody = JSON.parse(request.body);
+  assert.equal(requestBody.model, "gpt-5.6-luna");
+  assert.equal(requestBody.reasoning.effort, "none");
+  assert.equal(requestBody.store, false);
+  assert.equal(requestBody.text.format.type, "json_schema");
+  assert.equal(requestBody.text.format.strict, true);
+  assert.equal(requestBody.text.format.name, "grounded_financial_answer");
+  assert.equal(requestBody.tools, undefined);
+  assert.equal(JSON.parse(requestBody.input).observations[0].protocol, "Aave V3");
+  assert.equal(JSON.stringify(requestBody).includes("secret-openai-key"), false);
+  assert.equal(request.headers.authorization, "Bearer secret-openai-key");
+});
+
+test("OpenAI Responses malformed output falls back through the provider-neutral interpreter", async () => {
+  const generator = createOpenAIResponsesGenerator({ apiKey: "secret-openai-key", fetchImpl: async () => ({ ok: true, status: 200, json: async () => ({ output_text: "not-json" }) }) });
+  const interpreter = createInterpreter({ generate: generator });
+  assert.equal((await interpreter.interpret(analysis)).mode, "fallback");
+});
+
+test("model factory prefers OpenAI Responses when its credential is configured", async () => {
+  const generator = createModelGenerator({ openaiApiKey: "secret-openai-key", openaiModel: "gpt-5.6-luna", fetchImpl: async (_url, options) => ({ ok: true, status: 200, json: async () => ({ output_text: JSON.stringify(valid()) }) }) });
+  const result = await generator({ packet: buildEvidencePacket(analysis) });
+  assert.equal(result.summary.text, "The observation is current.");
 });
