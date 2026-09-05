@@ -1,7 +1,8 @@
 # Public-release checklist
 
-This checklist records the current release-candidate state. Unchecked items
-require explicit review or a future release action.
+This checklist records the completed public release state of the bounded
+ETHOnline 2026 experiment. The event workstream is closed; unchecked items
+were not pursued because no ETHOnline submission was made.
 
 - [x] Complete `main` → `build/model-backed-analyst` diff reviewed
 - [x] Secret scan passed
@@ -22,13 +23,14 @@ require explicit review or a future release action.
 - [x] Local start/health smoke passed
 - [x] Deployment smoke passed for the current presentation revision
 - [x] Demo URL recorded: https://capital.agencyai.me/
-- [ ] Demo video recorded
+- [ ] Demo video recorded — not pursued; no ETHOnline submission was made
 - [x] Repository visibility explicitly approved
 - [x] Final merge to `main` explicitly approved
 - [x] Public repository verified after visibility change
-- [ ] ETHGlobal submission details reviewed
+- [ ] ETHGlobal submission details reviewed — not applicable to this release
 
-The repository is public and the release candidate is merged to `main`.
-Demo video and submission items still require explicit review and approval.
-The current presentation revision has passed hosted redeploy, model, fallback,
-desktop, mobile, and evidence checks.
+The repository is public and the release candidate is merged to `main`. The
+ETHOnline 2026 workstream closed without a submission because participant
+registration had closed before the developer registered for the event. The
+application, deployment, tests, and public-release checks passed and are
+preserved as the AgencyAI Graph Financial Analyst baseline.

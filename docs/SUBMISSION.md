@@ -1,6 +1,9 @@
 # ETHOnline 2026 submission package
 
-This is prepared for review. No ETHGlobal submission has been made.
+This is an archived ETHOnline 2026 submission package. No ETHOnline
+submission was made because participant registration had closed before the
+developer registered for the event. The technical material is retained as a
+future reference; no current prize claim is implied.
 
 ## Recommended title
 
@@ -107,21 +110,16 @@ uses live standardized Subgraph data across three lending protocols and adds
 natural-language interpretation, deterministic analysis, and evidence
 grounding. It does not claim MCP, Composition, Token API, Substreams, or x402.
 
-There is one eligibility decision gate. ETHGlobal's current rules say the
-From Scratch pool requires all project-specific work to begin after the
-hackathon officially starts, and that projects built before the event do not
-qualify for partner prizes. This repository's initial setup commit is dated
-2026-09-03; the event listing shows ETHOnline 2026 beginning 2026-09-04. That
-commit contains only `.gitignore` and a three-line placeholder README. There
-was no code, Graph query, design asset, or working analyst before the listed
-start date; the next project-specific commit is dated 2026-09-04 at 00:31 UTC.
-The safest classification is therefore ambiguous pending organizer
-confirmation: likely Start Fresh if empty repository scaffolding is allowed,
-but not a basis to relabel the work as Continuity. The repository was
-intentionally kept separate from private AgencyAI production repositories.
+The historical eligibility review found that the initial setup commit was
+dated 2026-09-03 and contained only `.gitignore` and a three-line placeholder
+README. There was no code, Graph query, design asset, or working analyst in
+that commit. A later boundary README commit was dated 2026-09-04 at 00:31 UTC,
+but the exact event kickoff timestamp was not published on the accessible
+official pages. The project was not submitted, so no pool was selected and no
+eligibility claim is being made.
 
 ETHGlobal also asks teams to disclose AI-tool use and distinguish new work from
-reused work. Include that disclosure in the final dashboard submission.
+reused work. Preserve that as procedural guidance for any future submission.
 
 ## Positioning after comparator review
 
@@ -139,8 +137,9 @@ standardized live observations are qualified by economic role and freshness,
 normalized deterministically, assembled into a canonical evidence object, and
 then passed to a constrained interpreter whose evidence references are checked
 before acceptance. The user can inspect the same provenance, and deterministic
-fallback remains available. The submission should say this is the product's
-focus, not that the underlying standardized-schema pattern is unprecedented.
+fallback remains available. Any future submission should say this is the
+product's focus, not that the underlying standardized-schema pattern is
+unprecedented.
 
 Official sources, accessed 2026-09-05 UTC:
 
@@ -158,12 +157,11 @@ normalization and comparison, and gives the resulting evidence to an AI model
 for explanation. This is meaningful work beyond displaying a query result: the
 model communicates a grounded comparison, return-source explanation, and
 limitations, while evidence references are validated before acceptance. The
-public repository, live demo, and 2–4 minute video satisfy the technical
-submission shape. The From Scratch timing/pool requirement remains pending
-official clarification because the empty repository was created before the
-displayed event start, even though all substantive implementation followed it.
+public repository and live demo satisfied the technical shape; no video or
+submission was made. The following pool-specific versions are retained only
+as future reference.
 
-### From Scratch version — use only if confirmed
+### Historical From Scratch version
 
 This was a new, empty repository at the start of the event: the only earlier
 content was `.gitignore` and a three-line placeholder README. During ETHOnline,
@@ -172,7 +170,7 @@ deterministic financial analysis, evidence contract, grounded AI interpreter,
 fallback behavior, UI, tests, and deployment. The final app uses The Graph as
 its live source and does meaningful analysis beyond displaying raw results.
 
-### Continuity version — use only if organizers classify it this way
+### Historical Continuity version
 
 The pre-event state was an empty repository scaffold with no functional
 analyst, Graph integration, or application code. During ETHOnline, the new
@@ -180,9 +178,8 @@ feature set was the complete Graph-grounded financial analyst: live Aave V3,
 Compound III, and Spark Lend observations; economic-role qualification;
 deterministic comparison; canonical evidence; constrained model
 interpretation; grounding validation; fallback; UI; and deployment. The commit
-history documents that progression. This version should be used only if
-ETHGlobal confirms that the repository qualifies for Continuity despite not
-being an extension of an existing public or private product.
+history documents that progression. It was not used for an ETHOnline 2026
+submission.
 
 ## Secondary bounty response
 

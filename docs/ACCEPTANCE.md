@@ -1,5 +1,9 @@
 # Model-Backed Analyst Acceptance
 
+This is a historical acceptance record from before the final public release.
+Later release clearance, publication, and baseline tagging are recorded in
+`docs/PUBLIC_RELEASE.md`, `docs/HACKATHON_OUTCOME.md`, and `docs/BASELINE.md`.
+
 ## Acceptance record
 
 - Acceptance date: 2026-09-05 UTC
@@ -11,8 +15,8 @@
 
 This milestone adds the smallest model-backed interpretation path while
 preserving the accepted live Graph and deterministic analysis boundary. The
-repository remains private and no execution or control-plane capability was
-added.
+repository was private at this checkpoint and was later made public after the
+release audit. No execution or control-plane capability was added.
 
 ## Judge journey
 
@@ -152,8 +156,8 @@ Pass for the change set reviewed:
 - no fixtures enter the normal live request path;
 - no wallet, transaction, execution, policy, or control-plane surface was added.
 
-The repository remains private. Run a final secret scan immediately before any
-future visibility change.
+The repository was private at this checkpoint. A later final release audit
+passed before publication; no execution or control-plane capability was added.
 
 ## Validation commands and results
 
@@ -171,7 +175,7 @@ public-release scan                       passed: no credential-shaped values or
 git diff --check                          passed
 ```
 
-## Known limitations
+## Known limitations at this checkpoint
 
 - Z.ai Coding Plan was used only as a temporary validation endpoint; final
   endpoint selection remains open. OpenAI's Responses API is now the faster
@@ -186,14 +190,18 @@ git diff --check                          passed
 - Subgraph MCP remains deferred and was not operationally validated.
 - Browser automation and screenshot capture were unavailable.
 
-## Required before public release
+## Historical release gates
 
 1. Decide whether the final runtime should use OpenAI `gpt-5.6-luna` or Z.ai’s
    general API rather than the temporary Coding Plan endpoint.
 2. Run a final secret scan and review the complete public diff.
 3. Decide repository visibility explicitly, then prepare the demo materials.
 
-## Recommended next milestone
+These gates were subsequently resolved or intentionally closed; no ETHOnline
+2026 submission was made because participant registration had closed before the
+developer registered.
+
+## Historical recommended next milestone
 
 Review the grounded live OpenAI and Z.ai results and choose the final approved
 endpoint. Then prepare only the final public README/demo artifacts; do not add

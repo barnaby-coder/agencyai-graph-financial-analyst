@@ -122,8 +122,9 @@ number.
 - Aave V3, Compound III, and Spark Lend
 - live Graph data, deterministic comparison, grounded interpretation
 
-This is a bounded ETHOnline 2026 experiment, not a generalized DeFi assistant
-or a second AgencyAI production implementation.
+This began as a bounded ETHOnline 2026 experiment and is now a stable public
+financial-intelligence baseline, not a generalized DeFi assistant or a second
+AgencyAI production implementation.
 
 ## Safety and limitations
 
@@ -190,18 +191,16 @@ normal test suite.
 
 ## Hackathon positioning
 
-The strongest technical fit is **Best AI Tooling or AI Use Case with The Graph
-(From Scratch)**: a natural-language financial question is answered using live
-Graph evidence, deterministic financial analysis, model interpretation, and
-inspectable grounding. ETHGlobal's current rules require From Scratch work to
-begin after the hackathon starts; the final submission must confirm the
-appropriate eligibility pool for this repository's recorded timeline.
+This project was prepared during the ETHOnline 2026 period as a bounded Graph
+financial-intelligence experiment. No ETHOnline submission was made because
+participant registration had closed before the developer registered for the
+event. No prize or judging claim is implied.
 
-A second technically justified fit is **Best Use of Composable or Standardized
-Graph Products**, based on the cross-protocol standardized lending data path.
-This repository does not claim to use Graph Composition or any other Graph
-product outside the current scope. See the [submission package](docs/SUBMISSION.md)
-for the prepared copy and current eligibility notes.
+The technical work was evaluated against **Best AI Tooling or AI Use Case with
+The Graph** and **Best Use of Composable or Standardized Graph Products**. The
+repository does not claim to use Graph Composition or any other Graph product
+outside the current scope. See the [hackathon outcome](docs/HACKATHON_OUTCOME.md)
+and [baseline](docs/BASELINE.md) for the durable project record.
 
 ## Further reading
 
@@ -210,6 +209,9 @@ for the prepared copy and current eligibility notes.
 - [Acceptance record](docs/ACCEPTANCE.md)
 - [Demo storyboard](docs/DEMO.md)
 - [Submission package](docs/SUBMISSION.md)
+- [Hackathon outcome](docs/HACKATHON_OUTCOME.md)
+- [Baseline](docs/BASELINE.md)
+- [Main project handoff](docs/MAIN_PROJECT_HANDOFF.md)
 - [Deployment notes](docs/DEPLOYMENT.md)
 - [Public-release checklist](docs/PUBLIC_RELEASE.md)
 

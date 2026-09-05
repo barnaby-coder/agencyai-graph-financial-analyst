@@ -1,5 +1,10 @@
 # Graph Financial Analyst Feasibility
 
+This is the historical feasibility record. The proposed vertical slice was
+completed, publicly deployed, and is now preserved as the AgencyAI financial-
+intelligence baseline. No ETHOnline 2026 submission was made because
+participant registration had closed before the developer registered.
+
 _Spike date: 2026-09-04 UTC. Scope: Ethereum USDC lending, read-only._
 
 ## 1. Verdict
@@ -37,9 +42,9 @@ listing shows ETHOnline 2026 beginning 2026-09-04. That commit contains only
 `.gitignore` and a three-line placeholder README; it contains no code, Graph
 query, design asset, or working analyst. The next project-specific commit is
 dated 2026-09-04 at 00:31 UTC, after the listed start date. The safest position
-is therefore ambiguous pending organizer confirmation: likely Start Fresh if
-repository scaffolding is allowed, but not a basis to relabel the work as
-Continuity.
+was historically ambiguous because the exact kickoff time was not published;
+no pool was selected because the project was not submitted. This record is not
+an active eligibility request or a basis to relabel the work as Continuity.
 
 The second strong fit is **Best Use of Composable or Standardized Graph
 Products**. The project can qualify by meaningfully building on a standardized
@@ -48,11 +53,11 @@ requirements additionally require either two or more Graph products or a
 standardized schema, live provider data, a clear explanation of the standards
 leverage, a public repo, and a 2–4 minute video.
 
-The repository is now public, the live demo is deployed, and the README is
-runnable. Remaining submission work is the 2–4 minute demo video, final
-dashboard submission, and resolution of the From Scratch pool timing question.
-The project uses one Graph product family (Subgraphs) and a standardized
-schema; it must not claim Composition or a two-product implementation.
+The repository is public, the live demo is deployed, and the README is
+runnable. The live validation, demo preparation, and public-release work
+described by this feasibility plan were completed. The project uses one Graph
+product family (Subgraphs) and a standardized schema; it must not claim
+Composition or a two-product implementation.
 
 Official requirements checked 2026-09-05 UTC:
 
@@ -244,7 +249,8 @@ custom Subgraphs, custom Substreams, or copied code from private repositories.
   need a real client test.
 - The runtime key path is proven through secure environment injection, but
   production deployment still needs a secret-injection and rotation procedure.
-- A private repo cannot be submitted; make it public only after review.
+- At the time of this feasibility review, the repository was private; it was
+  later made public after the technical and security review.
 
 ## 10. Estimated remaining build effort
 
@@ -259,17 +265,16 @@ Assuming Graph credentials and a stable model endpoint are available:
 | Testing and failure cases | 0.5–1 day |
 | Submission materials, public README, video | 0.5–1 day |
 
-Total: approximately 5–8 focused engineering days after the credentialed
-rerun passes.
+Total: approximately 5–8 focused engineering days was the historical estimate;
+the resulting vertical slice and release baseline are now complete.
 
 ## 11. Recommended next milestone
 
-Review this GO decision, then implement only the tiny hackathon vertical slice:
-keep the authenticated runtime secret injection, pin the three qualified
-deployments and market IDs, add fail-closed freshness handling, and expose the
-deterministic comparison to a minimal agent-facing interaction. Make the repo
-public only after review and before submission. Do not add execution or
-capital-control capabilities.
+The recommended implementation milestone from this feasibility review was
+completed: authenticated Graph access, qualified deployments, deterministic
+comparison, evidence, grounded interpretation, fallback, and public release.
+The next step is a separate main-project handoff; do not add execution or
+capital-control capabilities to this repository.
 
 ## Canonical research inputs inspected
 

@@ -1,13 +1,19 @@
 # Demo storyboard
 
+This is a reusable recording storyboard retained from the ETHOnline 2026
+experiment. No ETHOnline video was recorded or published because participant
+registration had closed before the developer registered for the event. Reuse
+it for a future approved demo only after checking that event's rules and track
+requirements.
+
 Target length: approximately three minutes. Keep the recording between two
 and four minutes, use the live app, and show the real loading and evidence
 states. The current hosted request normally takes about 11–12 seconds.
 
 Live app: <https://capital.agencyai.me>
 
-Recording gate: confirm the ETHGlobal prize pool before recording so any
-required provenance sentence is included once.
+Future recording gate: confirm the event, registration, and prize-pool rules
+before recording so any required provenance sentence is included once.
 
 ## Timed script
 
