@@ -5,7 +5,7 @@
 - Acceptance date: 2026-09-05 UTC
 - Tested branch: `build/model-backed-analyst`
 - Baseline: `25c793a1cd866345b9edad03908cd81b43ff4833`
-- Implementation head: `b73f494`
+- Implementation head before live validation: `9496862`
 - Verdict: **PASS WITH MINOR ISSUES**
 
 This milestone adds the smallest model-backed interpretation path while
@@ -32,11 +32,12 @@ by credential-free tests.
 
 ## Current Graph and protocol status
 
-The accepted live validation remains valid for Aave V3, Compound III, and Spark
-Lend. The last authenticated application smoke test used block `25908192`,
-captured at `2026-09-05T02:38:50Z`, with approximately three seconds of block
-age and `hasIndexingErrors=false` for all three deployments. The model
-integration milestone did not change the Graph query or normalizer.
+The final authenticated application smoke test used block `25910488`, with
+block timestamp `1788603611` and approximately 12 seconds of age at capture.
+All three deployments returned fresh observations and
+`hasIndexingErrors=false`. The Graph query, protocol qualification, and
+deterministic normalizer remained unchanged apart from shorter model-facing
+evidence IDs.
 
 | Protocol | Semantic qualification | Result |
 |---|---|---|
@@ -53,17 +54,20 @@ known evidence references, rejects APY/execution/unsupported-incentive claims,
 and falls back on timeout, provider failure, malformed output, grounding
 failure, missing configuration, or stale observations.
 
-No approved live model credential or provider configuration was available in
-this environment. Consequently, no provider/model was selected and no live
-model smoke test was run. The production-shaped adapter is tested with mocks;
-the live demo remains clearly labeled `Deterministic fallback` until a model
-endpoint is approved and configured with `MODEL_API_URL` and
-`MODEL_API_KEY`. This is the remaining minor issue for the AI bounty claim.
+Live validation used Z.ai Coding Plan temporarily via
+`https://api.z.ai/api/coding/paas/v4/chat/completions` with model
+`glm-5.3-flash`. Authentication succeeded, the full evidence packet was sent,
+and the response was structured JSON accepted by the application. The final
+normal application request returned `mode: "model"` in approximately 32
+seconds. Evidence references `aave-v3`, `compound-v3`, and `spark-lend` all
+resolved.
 
-The AI use case is credible in architecture and interaction design because
-natural-language input is grounded in live Graph evidence and deterministic
-financial analysis. Live model execution still needs one secure validation
-before claiming a model-backed demo in submission materials.
+The generated answer usefully compared supply rates, utilization, observable
+liquidity, borrower-funded return, rate limitations, and unknown incentives. It
+did not issue an execution recommendation or label the neutral rates as APY.
+The AI acceptance issue is therefore resolved for the temporary validation
+configuration. The Coding Plan endpoint is not approved as the final public
+deployment choice; general Z.ai API selection remains a release decision.
 
 ## Evidence UX
 
@@ -103,19 +107,20 @@ future visibility change.
 npm test                                  20 passing tests
 node --check src/**/*.mjs public/app.js   passed
 GET /api/health                           passed; modelConfigured=false without model env
-deterministic fallback smoke              passed through injected and failure-path tests
-authenticated Graph smoke                 3/3 protocols, fresh, no indexing errors (accepted baseline)
-live model smoke                          not run: no approved model credential/provider
+deterministic fallback smoke              passed with model configuration disabled; 3 observations
+authenticated Graph smoke                 3/3 protocols, fresh, no indexing errors; block 25910488
+live Z.ai application smoke               HTTP 200, mode=model, grounded refs resolved, ~32 seconds
 public-release scan                       passed: no credential-shaped values or private references found
 git diff --check                          passed
 ```
 
 ## Known limitations
 
-- A live model provider still requires secure approval/configuration and one
-  explicit smoke test.
+- Z.ai Coding Plan was used only as a temporary validation endpoint; final
+  endpoint selection remains open.
+- Model latency was approximately 32 seconds for the full evidence packet.
 - The optional JSON model endpoint is intentionally small and expects the
-  documented request/response contract; provider-specific routing is deferred.
+  documented request/response contract.
 - Incentive yield remains unknown in the qualified standardized source.
 - Scope is Ethereum + USDC + Aave V3, Compound III, and Spark Lend only.
 - Subgraph MCP remains deferred and was not operationally validated.
@@ -123,15 +128,13 @@ git diff --check                          passed
 
 ## Required before public release
 
-1. Approve a model provider/endpoint or explicitly submit with the clearly
-   labeled deterministic fallback and avoid overstating the AI claim.
-2. Run one authenticated live-model smoke test with no credential capture.
-3. Run a final secret scan and review the complete public diff.
-4. Decide repository visibility explicitly, then prepare the demo materials.
+1. Decide whether the final runtime should use Z.ai’s general API rather than
+   the temporary Coding Plan endpoint.
+2. Run a final secret scan and review the complete public diff.
+3. Decide repository visibility explicitly, then prepare the demo materials.
 
 ## Recommended next milestone
 
-Review the model-backed branch and choose the approved model provider. If
-approved, run the live model smoke test and record the grounded result. Then
-prepare only the final public README/demo artifacts; do not add more Graph
+Review the grounded live Z.ai result and choose the final approved endpoint.
+Then prepare only the final public README/demo artifacts; do not add more Graph
 products, protocols, chains, execution, wallets, or control-plane features.
