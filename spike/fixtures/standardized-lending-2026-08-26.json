@@ -1,0 +1,12 @@
+{
+  "capturedAt": "2026-08-26T18:13:11Z",
+  "source": "Prior bounded standardized lending runtime record",
+  "chain": "ethereum",
+  "asset": "USDC",
+  "decimals": 6,
+  "markets": [
+    {"protocol":"Aave V3","market":"0x98c23e9d8f34fefb1b7bd6a91b7ff122f4e16f5c","suppliedRaw":"2192292524172256","borrowedRaw":"2028587325546704","supplyRatePct":3.8819911200713553,"borrowRatePct":4.6615777197110279,"blockNumber":25839615,"observedAt":"2026-08-26T13:13:59Z","subgraphId":"JCNWRypm7FYwV8fx5HhzZPSFaMxgkPuw4TnR3Gpi81zk","deploymentId":"QmcXE5QVcBcvcaJddPxd8mFs6W9xt7STmwfgguoiM6ddAd"},
+    {"protocol":"Compound III","market":"0xc3d688b66703497daa19211eedff47f25384cdc3a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48","suppliedRaw":"364668871639500","borrowedRaw":"329332209196342","supplyRatePct":4.230541959048,"borrowRatePct":5.1157743949584,"blockNumber":25841105,"observedAt":"2026-08-26T18:13:11Z","subgraphId":"AwoxEZbiWLvv6e3QdvdMZw4WDURdGbvPfHmZRc8Dpfz9","deploymentId":"QmNrQoow7pjM3biRnnhzeCaDYhuEbDyjKCpFeNv2oGXnuK"},
+    {"protocol":"Spark Lend","market":"0x377c3bd93f2a2984e1e7be6a5c22c525ed4a4815","suppliedRaw":"22867931819774","borrowedRaw":"21055415085697","supplyRatePct":3.4713060462863152,"borrowRatePct":4.1894162629879291,"blockNumber":null,"observedAt":"2026-08-26T12:40:47Z","subgraphId":"GbKdmBe4ycCYCQLQSjqGg6UHYoYfbyJyq5WrG35pv1si","deploymentId":"QmTVumjhubXWP8MeDx5g114MRX99E4Gie5mFqVurttF99X"}
+  ]
+}
