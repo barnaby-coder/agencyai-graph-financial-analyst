@@ -208,3 +208,7 @@ that is outside the current scope.
 - [Demo storyboard](docs/DEMO.md)
 - [Deployment notes](docs/DEPLOYMENT.md)
 - [Public-release checklist](docs/PUBLIC_RELEASE.md)
+
+## License
+
+[MIT](LICENSE)

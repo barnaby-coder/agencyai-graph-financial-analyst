@@ -9,6 +9,7 @@ require explicit review or a future release action.
 - [x] No private repository references
 - [x] No private filesystem paths
 - [x] No unsupported capability claims found
+- [x] MIT `LICENSE` added
 - [x] README judge-ready
 - [ ] Desktop browser smoke accepted at approximately 1440px for the current presentation revision
 - [ ] Mobile browser smoke accepted at approximately 390px for the current presentation revision
