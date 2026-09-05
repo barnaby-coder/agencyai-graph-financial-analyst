@@ -30,6 +30,8 @@ test("model packet is compact, structured, and excludes raw Graph or secret fiel
 
 test("valid model output and evidence references are accepted", () => {
   assert.deepEqual(validateModelOutput(valid(), [source.evidenceId]).evidenceRefs, [source.evidenceId]);
+  const { evidenceRefs: _aggregate, ...pointOnly } = valid();
+  assert.deepEqual(validateModelOutput(pointOnly, [source.evidenceId]).evidenceRefs, [source.evidenceId]);
 });
 
 test("unknown evidence references and unsafe claims are rejected", () => {
@@ -61,14 +63,22 @@ test("stale data prevents model interpretation and preserves fail-closed compari
 
 test("HTTP generator sends only the model packet and never exposes its credential in errors", async () => {
   let request;
-  const generator = createJsonModelGenerator({ endpoint: "https://model.test", apiKey: "secret-test-key", fetchImpl: async (_url, options) => {
+  let requestUrl;
+  const generator = createJsonModelGenerator({ endpoint: "https://model.test/api/v4", apiKey: "secret-test-key", fetchImpl: async (url, options) => {
+    requestUrl = url;
     request = options;
-    return { ok: true, status: 200, json: async () => valid() };
+    return { ok: true, status: 200, json: async () => ({ choices: [{ message: { content: JSON.stringify(valid()) } }] }) };
   } });
   const result = await generator({ packet: buildEvidencePacket(analysis) });
   assert.equal(result.evidenceRefs[0], source.evidenceId);
+  assert.equal(requestUrl, "https://model.test/api/v4/chat/completions");
   assert.equal(request.headers.authorization, "Bearer secret-test-key");
-  assert.equal(JSON.parse(request.body).input.question, analysis.question);
+  const requestBody = JSON.parse(request.body);
+  assert.equal(requestBody.messages[1].role, "user");
+  assert.equal(JSON.parse(requestBody.messages[1].content).question, analysis.question);
+  assert.deepEqual(requestBody.response_format, { type: "json_object" });
+  assert.deepEqual(requestBody.thinking, { type: "disabled" });
+  assert.equal(requestBody.max_tokens, 1800);
   assert.equal(JSON.stringify(request.body).includes("secret-test-key"), false);
 });
 

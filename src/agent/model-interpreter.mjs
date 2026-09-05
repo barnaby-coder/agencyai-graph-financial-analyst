@@ -6,7 +6,7 @@ If data is partial, stale, unavailable, or an incentive is unknown, say so clear
 
 export const MODEL_OUTPUT_SCHEMA = Object.freeze({
   type: "object",
-  required: ["summary", "observations", "comparison", "returnSource", "risksAndLimitations", "evidenceRefs"],
+  required: ["summary", "observations", "comparison", "returnSource", "risksAndLimitations"],
   properties: {
     summary: { type: "object", required: ["text", "evidenceRefs"] },
     observations: { type: "array", items: { type: "object", required: ["text", "evidenceRefs"] } },
@@ -90,13 +90,13 @@ export function validateModelOutput(output, validEvidenceIds) {
   for (const key of POINT_KEYS) {
     if (!Array.isArray(output[key]) || !output[key].every(isPoint)) throw new Error("Model output schema validation failed");
   }
-  if (!Array.isArray(output.evidenceRefs) || !output.evidenceRefs.every((ref) => typeof ref === "string")) throw new Error("Model output schema validation failed");
-  const refs = [...output.evidenceRefs, ...output.summary.evidenceRefs, ...POINT_KEYS.flatMap((key) => output[key].flatMap((point) => point.evidenceRefs))];
+  if (output.evidenceRefs !== undefined && (!Array.isArray(output.evidenceRefs) || !output.evidenceRefs.every((ref) => typeof ref === "string"))) throw new Error("Model output schema validation failed");
+  const refs = [...(output.evidenceRefs ?? []), ...output.summary.evidenceRefs, ...POINT_KEYS.flatMap((key) => output[key].flatMap((point) => point.evidenceRefs))];
   const allowed = new Set(validEvidenceIds);
   if (refs.some((ref) => !allowed.has(ref))) throw new Error("Model output referenced unknown evidence");
   const text = [output.summary.text, ...POINT_KEYS.flatMap((key) => output[key].map((point) => point.text))].join(" ");
   if (containsUnsafeClaim(text)) throw new Error("Model output contains an unsupported claim");
-  return output;
+  return { ...output, evidenceRefs: [...new Set(refs)] };
 }
 
 export function renderModelAnswer(output) {

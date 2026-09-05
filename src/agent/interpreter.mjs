@@ -61,7 +61,7 @@ export function createInterpreter({ generate } = {}) {
       const packet = buildEvidencePacket(analysis);
       const validEvidenceIds = packet.evidence.map((source) => source.id);
       try {
-        const generated = await withTimeout(generate({ packet, systemPrompt: MODEL_INSTRUCTIONS }), 16_000);
+        const generated = await withTimeout(generate({ packet, systemPrompt: MODEL_INSTRUCTIONS }), 65_000);
         return renderModelAnswer(validateModelOutput(generated, validEvidenceIds));
       } catch {
         return renderDeterministicFallback(analysis);

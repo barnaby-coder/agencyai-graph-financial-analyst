@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { buildEvidence, classifyFreshness, compareObservations, normalizeMarket } from "../src/financial/normalize.mjs";
 
-const config = { expectedMarketId: "0xc3d688b66703497daa19211eedff47f25384cdc3a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48", economicRole: "Compound III USDC base market" };
+const config = { expectedMarketId: "0xc3d688b66703497daa19211eedff47f25384cdc3a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48", economicRole: "Compound III USDC base market", deploymentId: "deployment-compound", slug: "compound-v3" };
 const meta = { block: { number: "100", timestamp: "1700000000" }, hasIndexingErrors: false };
 const market = (id = config.expectedMarketId) => ({ id, name: "Compound V3 USDC - USD Coin", inputToken: { id: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48", symbol: "USDC", decimals: 6 }, inputTokenBalance: "100000000", variableBorrowedTokenBalance: "25000000", rates: [{ side: "BORROWER", type: "VARIABLE", rate: "6" }, { side: "LENDER", type: "VARIABLE", rate: "5" }] });
 
@@ -15,6 +15,7 @@ test("normalizes balances, rates, utilization, and provenance", () => {
   assert.equal(observation.borrowRatePct, 6);
   assert.equal(observation.incentives, "unknown");
   assert.equal(observation.evidence.market, config.expectedMarketId);
+  assert.equal(observation.evidence.evidenceId, config.slug);
 });
 
 test("rejects a plausible but wrong Compound USDC collateral market", () => {
