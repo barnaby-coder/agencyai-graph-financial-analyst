@@ -5,7 +5,7 @@
 - Acceptance date: 2026-09-05 UTC
 - Branch: `review/demo-acceptance`
 - Reconciled implementation baseline: `88c9eb6`
-- Final hardening commit: recorded in the Git handoff for this branch
+- Final hardening commit: `3dbd19cdb94f54eb3f7105953596ea6d155ad016`
 - Verdict: **PASS WITH MINOR ISSUES**
 
 The bounded product journey works with fresh live Graph data and is ready for
