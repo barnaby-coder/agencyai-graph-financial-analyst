@@ -88,10 +88,10 @@ evidence, not proof that every field has identical economic meaning.
 ### Experiment 1 — Graph access
 
 Authenticated query run 2026-09-04 UTC against the official Gateway for all
-three prior deployments. The credential was retrieved from the unlocked
-Barnaby Vault item `The graph query api`, held in memory, and injected only as
-the runtime `Authorization: Bearer` value. It was not printed, captured in a
-fixture, or written to source.
+three prior deployments. The credential was supplied through a secure runtime
+secret mechanism, held in memory, and injected only as the runtime
+`Authorization: Bearer` value. It was not printed, captured in a fixture, or
+written to source.
 
 ```http
 POST https://gateway.thegraph.com/api/deployments/id/QmNrQoow7pjM3biRnnhzeCaDYhuEbDyjKCpFeNv2oGXnuK
@@ -230,8 +230,8 @@ custom Subgraphs, custom Substreams, or copied code from private repositories.
   separate source or an honest unknown label.
 - MCP authentication, tool names, rate limits, and failure recovery still
   need a real client test.
-- The runtime key path is proven through the approved Vault, but production
-  deployment still needs a secret-injection and rotation procedure.
+- The runtime key path is proven through secure environment injection, but
+  production deployment still needs a secret-injection and rotation procedure.
 - A private repo cannot be submitted; make it public only after review.
 
 ## 10. Estimated remaining build effort
@@ -261,7 +261,7 @@ capital-control capabilities.
 
 ## Canonical research inputs inspected
 
-Read-only inputs from `barnaby-coder/graph-protocol-analysis` included:
+Read-only inputs from the canonical research materials included:
 
 - `project/onchain-financial-intelligence/ARCHITECTURE.md`
 - `project/onchain-financial-intelligence/BUILD_MAP.md`

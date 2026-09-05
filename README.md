@@ -2,7 +2,7 @@
 
 A bounded, public-ready experiment exploring how an AI financial analyst can use **The Graph as its onchain data fabric** and turn live blockchain evidence into structured, understandable financial intelligence.
 
-This repository is intentionally separate from AgencyAI's canonical research and private production control plane. It exists as a proving ground for a narrow, Graph-native vertical slice that can be evaluated independently, demonstrated publicly, and discarded or promoted selectively based on evidence.
+This repository is intentionally separate from any canonical research or private production control plane. It exists as a proving ground for a narrow, Graph-native vertical slice that can be evaluated independently, demonstrated publicly, and discarded or promoted selectively based on evidence.
 
 ## What we are trying to prove
 
@@ -60,28 +60,6 @@ USER
 This repository stops at **research, analysis, explanation, and read-only simulation**.
 
 It does not own capital authorization or execution.
-
-## Relationship to other AgencyAI repositories
-
-This repository has a deliberately narrow role.
-
-### `barnaby-coder/graph-protocol-analysis`
-
-Canonical research, architecture, Graph capability analysis, and long-lived design decisions for AgencyAI Onchain Financial Intelligence.
-
-This hackathon/experiment repository does **not** replace it.
-
-### `barnaby-coder/agentic-commerce-control`
-
-Private production implementation workspace for AgencyAI's control plane and Onchain Financial Intelligence packages.
-
-This repository must not become a parallel production implementation.
-
-### `barnaby-coder/agent-operator-os`
-
-Reference source for prior Capital Control contracts, evidence patterns, provider governance, and bounded execution precedents.
-
-This repository may learn from those patterns but should not copy the capital-control subsystem into the experiment.
 
 ## Promotion rule
 
@@ -199,6 +177,20 @@ Those findings are useful outcomes in their own right.
 ## Current status
 
 The current bounded vertical slice is implemented on the review branch.
+
+## Current vertical slice
+
+The app asks one Ethereum + USDC lending question and compares live Graph
+observations from Aave V3, Compound III, and Spark Lend. It validates the
+market role, calculates supply, borrows, utilization, rates, liquidity proxy,
+and freshness in code, then presents a grounded fallback explanation with an
+evidence view. A model adapter boundary is available, but no model credential
+is required for the demo.
+
+Rates are shown as neutral supply/borrow percentage-point fields, not APY.
+Incentives remain `unknown` when the qualified source does not expose them.
+Stale or unavailable observations are caveated and cannot silently enter a
+current ranking.
 
 ## Run locally
 
