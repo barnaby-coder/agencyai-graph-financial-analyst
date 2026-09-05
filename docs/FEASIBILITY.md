@@ -21,14 +21,21 @@ surface.
 
 ## 2. Bounty fit
 
-The strongest fit is **Best AI Tooling or AI Use Case with The Graph — From
-Scratch / Start Fresh**. The intended demo is a natural-language financial
-research agent that uses Graph Subgraphs as live blockchain data, performs
-meaningful deterministic analysis, and explains the result. The relevant
-requirements are: The Graph must be load-bearing; live data from a Graph
-provider is required; the app must do meaningful work beyond printing raw
-results; and the code must be open-sourced with a runnable README, public repo,
-and 2–4 minute demo video.
+The strongest technical fit is **Best AI Tooling or AI Use Case with The Graph
+(From Scratch)**. The intended demo is a natural-language financial research
+agent that uses Graph Subgraphs as live blockchain data, performs meaningful
+deterministic analysis, and explains the result. The current requirements are:
+The Graph must be load-bearing; live data from a Graph provider is required;
+the app must do meaningful work beyond printing raw results; and the code must
+be open-sourced with a clear README, public repo, and 2–4 minute demo video.
+
+The From Scratch pool has an important eligibility condition: ETHGlobal says
+all project-specific work must begin after the hackathon officially starts and
+that projects built before the event do not qualify for partner prizes. This
+repository's initial setup commit is dated 2026-09-03, while the official event
+listing shows ETHOnline 2026 beginning 2026-09-04. The technical fit is strong,
+but the pool eligibility must be confirmed with ETHGlobal before selecting
+this partner prize. Do not describe From Scratch eligibility as confirmed.
 
 The second strong fit is **Best Use of Composable or Standardized Graph
 Products**. The project can qualify by meaningfully building on a standardized
@@ -37,15 +44,16 @@ requirements additionally require either two or more Graph products or a
 standardized schema, live provider data, a clear explanation of the standards
 leverage, a public repo, and a 2–4 minute video.
 
-Currently unsatisfied for eventual submission: this repo is private and must
-be made public before submission, and a 2–4 minute demo video plus runnable
-README still need to be produced. The project uses one Graph product family
-(Subgraphs) and a standardized schema; it must not claim Composition or a
-two-product implementation.
+The repository is now public, the live demo is deployed, and the README is
+runnable. Remaining submission work is the 2–4 minute demo video, final
+dashboard submission, and resolution of the From Scratch pool timing question.
+The project uses one Graph product family (Subgraphs) and a standardized
+schema; it must not claim Composition or a two-product implementation.
 
-Official requirements checked 2026-09-04:
+Official requirements checked 2026-09-05 UTC:
 
-- [ETHGlobal The Graph prize page](https://ethglobal.com/events/ethonline2026/prizes/the-graph)
+- [ETHGlobal ETHOnline 2026 prize page](https://ethglobal.com/events/ethonline2026/prizes)
+- [ETHGlobal ETHOnline 2026 rules and submission details](https://ethglobal.com/events/ethonline2026/info/details)
 - [The Graph hackathon resources](https://thegraph.com/blog/hackathon-resources/)
 
 ## 3. Graph capability decision

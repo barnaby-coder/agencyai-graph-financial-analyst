@@ -190,15 +190,18 @@ normal test suite.
 
 ## Hackathon positioning
 
-The intended primary track is **Best AI Tooling or AI Use Case with The Graph —
-From Scratch**: a natural-language financial question is answered using live
+The strongest technical fit is **Best AI Tooling or AI Use Case with The Graph
+(From Scratch)**: a natural-language financial question is answered using live
 Graph evidence, deterministic financial analysis, model interpretation, and
-inspectable grounding.
+inspectable grounding. ETHGlobal's current rules require From Scratch work to
+begin after the hackathon starts; the final submission must confirm the
+appropriate eligibility pool for this repository's recorded timeline.
 
-A possible secondary fit is **Best Use of Composable or Standardized Graph
-Products**, based on the cross-protocol standardized lending data path. This
-repository does not claim to use Graph Composition or any other Graph product
-that is outside the current scope.
+A second technically justified fit is **Best Use of Composable or Standardized
+Graph Products**, based on the cross-protocol standardized lending data path.
+This repository does not claim to use Graph Composition or any other Graph
+product outside the current scope. See the [submission package](docs/SUBMISSION.md)
+for the prepared copy and current eligibility notes.
 
 ## Further reading
 
@@ -206,6 +209,7 @@ that is outside the current scope.
 - [Feasibility evidence](docs/FEASIBILITY.md)
 - [Acceptance record](docs/ACCEPTANCE.md)
 - [Demo storyboard](docs/DEMO.md)
+- [Submission package](docs/SUBMISSION.md)
 - [Deployment notes](docs/DEPLOYMENT.md)
 - [Public-release checklist](docs/PUBLIC_RELEASE.md)
 
