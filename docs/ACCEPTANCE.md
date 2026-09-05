@@ -6,6 +6,7 @@
 - Tested branch: `build/model-backed-analyst`
 - Baseline: `25c793a1cd866345b9edad03908cd81b43ff4833`
 - Implementation head before live validation: `9496862`
+- Release-candidate hardening base: `1ee2b861`
 - Verdict: **PASS WITH MINOR ISSUES**
 
 This milestone adds the smallest model-backed interpretation path while
@@ -122,22 +123,32 @@ receives Graph or model credentials.
 
 ## UI review
 
-The existing calm, sparse financial layout was retained. The only model-related
-change is a subtle interpretation badge and an optional model summary above the
-four answer sections. The primary reading order remains question → live
-observations → analyst explanation → evidence. Narrow responsive CSS remains in
-place. Browser automation was unavailable, so this is not a pixel-level browser
-sign-off and no screenshot artifact was created.
+The calm, sparse financial layout was retained. Headless Chrome/DevTools review
+covered the live model path at approximately 1440px and 390px widths. Both
+rendered three protocol cards, the AI interpretation badge, three evidence
+rows, and no horizontal overflow. The mobile layout stacks the cards, answer
+sections, and evidence details without clipping.
+
+The loading state now communicates the actual bounded sequence — querying live
+markets, validating evidence, calculating deterministic metrics, and generating
+grounded analysis — without fake progress percentages or cached-result claims.
+The primary reading order remains question → live observations → analyst
+explanation → evidence. Local desktop, mobile, and loading screenshots were
+captured during review and were not committed as product assets. The evidence
+detail view exposes the normalized metric relationship alongside source,
+deployment, block, timestamp, freshness, and unknown incentives.
 
 ## Security / public-release audit
 
 Pass for the change set reviewed:
 
-- no API keys, auth headers, or credentials in source, fixtures, prompts, or docs;
+- no API keys, credential-bearing auth headers, or credentials in source,
+  fixtures, prompts, or docs;
 - model and Graph keys are read only on the server and are not returned to the browser;
 - model errors are generic and redact the configured key;
 - the model packet excludes raw Graph responses and secret-shaped fields;
-- no private paths, internal URLs, Vault details, private repository names, or copied private code;
+- no private paths, internal URLs, private secret-storage details, private
+  repository names, or copied private code;
 - no fixtures enter the normal live request path;
 - no wallet, transaction, execution, policy, or control-plane surface was added.
 

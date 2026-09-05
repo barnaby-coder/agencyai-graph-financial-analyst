@@ -9,6 +9,7 @@ import { createModelGenerator } from "./agent/model-client.mjs";
 const root = path.dirname(fileURLToPath(import.meta.url));
 const publicDir = path.join(root, "..", "public");
 const port = Number(process.env.PORT ?? 4173);
+const host = process.env.HOST ?? "127.0.0.1";
 const interpreter = createInterpreter({ generate: createModelGenerator() });
 
 function json(response, status, body) {
@@ -60,4 +61,4 @@ const server = http.createServer(async (request, response) => {
   }
 });
 
-server.listen(port, "127.0.0.1", () => console.log(`AgencyAI Graph Financial Analyst listening on http://127.0.0.1:${port}`));
+server.listen(port, host, () => console.log(`AgencyAI Graph Financial Analyst listening on http://${host}:${port}`));

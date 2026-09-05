@@ -15,6 +15,10 @@ const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({ "&"
 
 function showNotice(message, type = "warning") { notice.textContent = message; notice.className = `notice ${type}`; }
 function clearNotice() { notice.textContent = ""; notice.className = "notice hidden"; }
+function showLoading() {
+  grid.className = "market-grid loading-state";
+  grid.innerHTML = `<div class="loading-inner" role="status"><span class="loading-mark" aria-hidden="true"></span><strong>Building an evidence-backed comparison</strong><span>Querying live onchain markets → validating market evidence → calculating deterministic metrics → generating grounded analysis</span><small>This can take about 13 seconds while live Graph data is checked.</small></div>`;
+}
 
 function renderMarkets(data) {
   if (!data.observations.length) { grid.className = "market-grid empty-state"; grid.innerHTML = `<div class="empty-inner"><span class="empty-icon">×</span><span>No qualified live Graph observations returned.</span></div>`; return; }
@@ -55,12 +59,12 @@ function openEvidence(deploymentId) {
   if (existing) { existing.remove(); return; }
   const o = latest.observations.find((item) => item.evidence.deploymentId === deploymentId);
   const detail = document.createElement("div"); detail.className = "evidence-detail";
-  detail.innerHTML = `<div><span>Market role</span>${escapeHtml(o.economicRole)}</div><div><span>Block timestamp</span>${new Date(o.blockTimestamp * 1000).toISOString()}</div><div><span>Captured at</span>${escapeHtml(o.capturedAt)}</div><div><span>Deployment</span><code>${escapeHtml(o.evidence.deploymentId)}</code></div><div><span>Market ID</span><code>${escapeHtml(o.marketId)}</code></div><div><span>Method</span>utilization = borrows / supply · rates are percentage points</div><div><span>Unknowns</span>Incentives: unknown</div><div><span>Freshness</span>${o.freshness} · ${o.freshnessAgeSeconds}s old</div>`;
+  detail.innerHTML = `<div><span>Market role</span>${escapeHtml(o.economicRole)}</div><div><span>Block timestamp</span>${new Date(o.blockTimestamp * 1000).toISOString()}</div><div><span>Captured at</span>${escapeHtml(o.capturedAt)}</div><div><span>Deployment</span><code>${escapeHtml(o.evidence.deploymentId)}</code></div><div><span>Market ID</span><code>${escapeHtml(o.marketId)}</code></div><div><span>Method</span>utilization = borrows / supply · rates are percentage points</div><div><span>Unknowns</span>Incentives: unknown</div><div><span>Freshness</span>${o.freshness} · ${o.freshnessAgeSeconds}s old</div><div class="evidence-metrics"><span>Normalized metrics</span>${money(o.supply)} USDC supplied · ${money(o.borrows)} USDC borrowed · ${o.utilizationPct.toFixed(2)}% utilization · supply ${pct(o.supplyRatePct)} · borrow ${pct(o.borrowRatePct)} · ${money(o.liquidityProxy)} USDC liquidity proxy</div>`;
   row.appendChild(detail);
 }
 
 form.addEventListener("submit", async (event) => {
-  event.preventDefault(); clearNotice(); button.disabled = true; button.querySelector("span").textContent = "Investigating…"; captureMeta.textContent = "Querying The Graph";
+  event.preventDefault(); clearNotice(); button.disabled = true; button.querySelector("span").textContent = "Investigating…"; captureMeta.textContent = "Working through live evidence"; showLoading();
   try {
     const response = await fetch("/api/analyze", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ question: question.value }) });
     const body = await response.json();

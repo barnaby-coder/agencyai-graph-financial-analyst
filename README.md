@@ -1,235 +1,167 @@
 # AgencyAI Graph Financial Analyst
 
-A bounded, public-ready experiment exploring how an AI financial analyst can use **The Graph as its onchain data fabric** and turn live blockchain evidence into structured, understandable financial intelligence.
+An AI financial analyst grounded in live onchain evidence from The Graph.
 
-This repository is intentionally separate from any canonical research or private production control plane. It exists as a proving ground for a narrow, Graph-native vertical slice that can be evaluated independently, demonstrated publicly, and discarded or promoted selectively based on evidence.
+## Demo
 
-## What we are trying to prove
+**Deployed demo:** _to be recorded after deployment approval_
 
-The core question is simple:
+Use the sample question:
 
-> Can an agent use live Graph infrastructure to investigate an onchain financial question, normalize the evidence, calculate deterministic financial metrics, and produce a useful explanation without becoming a dashboard wrapper or inventing financial state?
+> I have USDC. What productive lending opportunities can we observe on Ethereum, where is the return coming from, how do the opportunities compare, and what risks should I understand?
 
-The intended first experience is a bounded research task such as:
+The app queries current Ethereum lending markets, compares the observations,
+and lets the judge inspect the evidence behind the explanation.
 
-> I have USDC. What productive lending opportunities can we observe on Ethereum, where does the return come from, how do the opportunities compare, and what risks should I understand?
+## Why this exists
 
-The system should be able to:
+Onchain financial data is transparent, but it is fragmented across protocols
+and difficult to interpret consistently. A rate leaderboard does not explain
+how utilization, observable liquidity, market semantics, or missing incentives
+affect the comparison.
 
-1. interpret the user's financial question;
-2. discover and query relevant Graph-powered data;
-3. normalize protocol-specific observations into common financial concepts;
-4. calculate important metrics deterministically;
-5. retain source, freshness, and evidence provenance;
-6. compare opportunities across protocols where reliable data permits;
-7. produce an evidence-backed explanation in ordinary language;
-8. expose the supporting evidence when asked "why?".
-
-## Architectural principle
-
-**Build on The Graph, not around The Graph. Build what The Graph enables, not what The Graph already provides.**
-
-Before implementing material onchain data acquisition, indexing, streaming, transformation, agent-access, or data-payment infrastructure, this project should first determine whether an existing or emerging Graph capability satisfies the requirement.
-
-Prefer integration over duplication unless there is a documented technical reason not to.
-
-This is **Graph-first, not Graph-only**. Specialist systems should still be used where they are objectively better suited to a task. For example, a DEX router may be the right source for an executable quote while The Graph supplies the underlying market evidence and historical context.
-
-## Intended system boundary
+## What it does
 
 ```text
-THE GRAPH
-Subgraphs / standardized data / MCP / Token API / Substreams / other Graph services
-        |
-        v
-GRAPH DATA ADAPTERS
-source identity / freshness / raw-to-canonical normalization
-        |
-        v
-FINANCIAL INTELLIGENCE
-observations / deterministic metrics / evidence / comparisons
-        |
-        v
-FINANCIAL ANALYST AGENT
-investigation / interpretation / synthesis / explanation
-        |
-        v
-USER
+user question
+    ↓
+The Graph live market data
+    ↓
+market qualification
+    ↓
+deterministic normalization and calculations
+    ↓
+evidence object
+    ↓
+AI interpretation
+    ↓
+grounding validation
+    ↓
+answer + inspectable evidence
 ```
 
-This repository stops at **research, analysis, explanation, and read-only simulation**.
+The current vertical slice compares Ethereum USDC supply markets from Aave V3,
+Compound III, and Spark Lend. It is read-only: no wallet, signing, transaction,
+capital movement, or execution capability exists.
 
-It does not own capital authorization or execution.
+## Why The Graph is essential
 
-## Promotion rule
+The Graph is the application's live onchain data fabric. The normal request
+cannot produce its current market observations without Graph data. The app
+uses qualified standardized lending Subgraph deployments to obtain comparable
+market primitives across Aave V3, Compound III, and Spark Lend, while retaining
+each source and block as provenance.
 
-Hackathon or experimental code does not become production code automatically.
+That common data path makes it possible to normalize supplied liquidity,
+borrows, utilization, supply/borrow rate fields, and an observable
+supply-minus-borrow liquidity proxy before an AI model sees the result. Graph
+data is therefore load-bearing, not decorative context attached to a chatbot.
 
-The promotion path is:
+## What the AI does
 
-```text
-experiment
-  -> evidence that the approach works
-  -> architectural review
-  -> canonical specification update where appropriate
-  -> deliberate production implementation or adaptation
-```
+The model interprets a compact evidence packet and explains what the current
+observations may mean. It does not establish financial truth.
 
-Never:
+Deterministic code owns:
 
-```text
-hackathon code -> production by default
-```
+- protocol and market-role qualification, including Compound III's USDC base market;
+- unit scaling, utilization, liquidity proxy, rate selection, and freshness;
+- comparison calculations and evidence construction;
+- evidence-reference and unsupported-claim validation.
 
-Anything useful discovered here must earn its way back into the canonical AgencyAI architecture.
+Rates are displayed as neutral supply/borrow percentage-point fields rather
+than asserted APY. Incentives remain `unknown` when the qualified source does
+not expose them. Stale or unavailable observations cannot silently enter a
+current ranking. If the model is unavailable or fails grounding validation,
+the deterministic evidence-first fallback remains usable.
 
-## Initial scope
+## Evidence-first architecture
 
-The first vertical slice should remain intentionally small:
+Every material answer point can be traced to a stable evidence reference with
+the protocol, market, economic role, Graph source/deployment, block, timestamps,
+freshness, normalized metrics, and methodology. The evidence view is part of
+the main judge journey: the AI does not ask the reader to trust an unexplained
+number.
 
-- Ethereum-first;
-- USDC-first;
-- lending / productive-use analysis;
-- 2-3 protocols only where live Graph-accessible data is reliable;
-- cross-protocol normalization where feasible;
-- deterministic calculations before agent interpretation;
-- explicit source and freshness metadata;
-- evidence-backed plain-language explanation;
-- no live trading or wallet actions.
+## Current scope
 
-Potential Graph-native capabilities to evaluate include:
+- Ethereum mainnet
+- USDC lending analysis
+- Aave V3, Compound III, and Spark Lend
+- live Graph data, deterministic comparison, grounded interpretation
 
-- Subgraphs and standardized schemas;
-- Subgraph MCP for agent-native discovery and querying;
-- Token API where it adds useful token or transfer context;
-- Substreams where event-level or streaming analysis is justified;
-- x402 only if it materially improves the agent workflow rather than being added for novelty.
+This is a bounded ETHOnline 2026 experiment, not a generalized DeFi assistant
+or a second AgencyAI production implementation.
 
-## Deterministic-before-agent rule
+## Safety and limitations
 
-The model should interpret evidence, not manufacture financial state.
-
-```text
-raw Graph data
-  -> canonical observation
-  -> deterministic metric
-  -> evidence object
-  -> analyst finding
-  -> agent synthesis
-```
-
-Examples:
-
-- utilization is calculated by code;
-- yield spreads are calculated by code;
-- changes in deposits/borrows are calculated by code;
-- freshness is determined by explicit metadata;
-- the agent explains what those facts may mean and why they matter.
-
-Material conclusions should remain traceable to their supporting source and calculation.
-
-## Non-goals
-
-For the initial experiment, do not build:
-
-- wallet signing;
-- order submission;
-- automated rebalancing;
-- live capital movement;
-- leverage creation;
-- bridges;
-- unrestricted cross-chain execution;
-- a replacement for AgencyAI policy or Capital Control;
-- a large protocol universe;
-- a universal risk score;
-- a polished dashboard before the intelligence loop works;
-- custom indexing infrastructure when The Graph already provides the required primitive.
-
-## Success criteria
-
-The experiment is successful when a user can ask a plain-language financial question and receive a current, evidence-backed answer that is materially more useful than a simple APY leaderboard.
-
-A strong result should make clear:
-
-- what opportunities were observed;
-- where the return comes from;
-- how the current observations differ;
-- which risks matter;
-- how current the evidence is;
-- which Graph sources support the answer;
-- what remains uncertain.
-
-## Experimental mindset
-
-This repository is a proving ground, not a commitment to a particular implementation.
-
-We should be willing to discover that:
-
-- a Graph product works extremely well and should be used more broadly;
-- a standardized schema reduces significant integration work;
-- MCP is a better agent interface than bespoke GraphQL tooling;
-- a missing financial primitive is worth building Graph-natively;
-- a particular integration is immature or unsuitable;
-- an external specialist service is the correct complement to The Graph.
-
-Those findings are useful outcomes in their own right.
-
-## Current status
-
-The current bounded vertical slice is implemented on the model-backed analyst
-branch. The repository remains private while the implementation is reviewed.
-
-## Current vertical slice
-
-The app asks one Ethereum + USDC lending question and compares live Graph
-observations from Aave V3, Compound III, and Spark Lend. It validates the
-market role, calculates supply, borrows, utilization, rates, liquidity proxy,
-and freshness in code, then presents an evidence-backed explanation with an
-evidence view. When configured, a server-side model interprets a compact,
-structured evidence packet. Without a model credential, the deterministic
-fallback remains the complete answer path.
-
-Rates are shown as neutral supply/borrow percentage-point fields, not APY.
-Incentives remain `unknown` when the qualified source does not expose them.
-Stale or unavailable observations are caveated and cannot silently enter a
-current ranking.
+- Read-only research and explanation only.
+- No wallet connectivity, signing, transactions, execution, or capital movement.
+- Incentive yield may be unknown.
+- Rates are neutral percentage-point fields, not an asserted APY.
+- The liquidity value is an observable comparison proxy, not a guarantee of
+  withdrawal or execution liquidity.
+- The result is a current point-in-time comparison, not investment advice or a
+  forecast.
 
 ## Run locally
+
+Requires a recent Node.js runtime. The server listens on `127.0.0.1:4173` by
+default; set `PORT` and, for a host that needs external binding, `HOST` to
+override them.
+
+Live Graph path:
 
 ```bash
 GRAPH_API_KEY=<runtime-secret> npm start
 ```
 
-Open http://127.0.0.1:4173. The key is server-only and must never be committed
-or sent to the browser. `npm test` runs the credential-free unit tests.
-
-Optional model interpretation uses a server-side model endpoint. OpenAI uses the
-Responses API when `OPENAI_API_KEY` is configured:
+OpenAI model-backed interpretation:
 
 ```bash
-OPENAI_API_KEY=<runtime-secret> OPENAI_MODEL=gpt-5.6-luna npm start
+GRAPH_API_KEY=<runtime-secret> \
+OPENAI_API_KEY=<runtime-secret> \
+OPENAI_MODEL=gpt-5.6-luna \
+npm start
 ```
 
-`OPENAI_API_URL` can override the default Responses endpoint. The existing
-OpenAI-compatible chat-completions transport remains available for other
-providers:
+`OPENAI_API_URL` optionally overrides the default OpenAI Responses endpoint.
+The OpenAI key is server-only. If it is absent, the deterministic fallback is
+used. The existing provider-compatible chat-completions transport can be used
+with `MODEL_API_URL`, `MODEL_API_KEY`, and optional `MODEL_NAME`; the server
+selects OpenAI when `OPENAI_API_KEY` is present. Never commit credentials.
+
+Health is available at `/api/health`. The primary analysis request is
+`POST /api/analyze` with `{ "question": "..." }`.
+
+## Tests
 
 ```bash
-MODEL_API_URL=<approved-model-endpoint> MODEL_API_KEY=<runtime-secret> npm start
+npm test
 ```
 
-`MODEL_NAME` is optional for that transport. OpenAI receives the compact
-evidence packet through `instructions`, `input`, and strict Responses API JSON
-schema output; the compatible transport receives `messages` and
-`response_format`. Neither transport receives raw Graph responses. Missing
-model configuration, provider failure, invalid output, or unresolved evidence
-references selects the deterministic fallback.
+The tests cover Graph failures, qualification, deterministic calculations,
+freshness, evidence linkage, both model transports, structured output, and
+deterministic fallback behavior. Live credentials are not required for the
+normal test suite.
 
-The model explains deterministic results; it does not calculate metrics,
-qualify markets, decide freshness, or recommend execution. Rates remain neutral
-percentage-point fields rather than APY, and incentives remain unknown when the
-qualified Graph source does not expose them.
+## Hackathon positioning
 
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the implementation
-boundary and [docs/FEASIBILITY.md](docs/FEASIBILITY.md) for live validation
-evidence.
+The intended primary track is **Best AI Tooling or AI Use Case with The Graph —
+From Scratch**: a natural-language financial question is answered using live
+Graph evidence, deterministic financial analysis, model interpretation, and
+inspectable grounding.
+
+A possible secondary fit is **Best Use of Composable or Standardized Graph
+Products**, based on the cross-protocol standardized lending data path. This
+repository does not claim to use Graph Composition or any other Graph product
+that is outside the current scope.
+
+## Further reading
+
+- [Architecture](docs/ARCHITECTURE.md)
+- [Feasibility evidence](docs/FEASIBILITY.md)
+- [Acceptance record](docs/ACCEPTANCE.md)
+- [Demo storyboard](docs/DEMO.md)
+- [Deployment notes](docs/DEPLOYMENT.md)
+- [Public-release checklist](docs/PUBLIC_RELEASE.md)
