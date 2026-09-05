@@ -1,5 +1,17 @@
 # Deployment notes
 
+## Cloudflare Worker architecture
+
+`src/worker.mjs` is the Cloudflare entrypoint. It delegates `/health` and
+`/api/analyze` to the shared request handler, which uses the existing Graph,
+financial, evidence, and model modules. Cloudflare Workers Static Assets serves
+`public/` through the `ASSETS` binding; the Worker is invoked first for API and
+health paths. No financial or model logic is duplicated for the Worker.
+
+The deployment configuration is in `wrangler.toml`. It deliberately enables
+`workers.dev` only; the custom domain is bound only after temporary-host
+validation passes.
+
 ## Runtime
 
 - Recent Node.js runtime with native `fetch` support.
@@ -8,6 +20,10 @@
 - Set `HOST=0.0.0.0` on a host that routes external traffic to the process.
 - Default port: `4173`; set `PORT` for a host-provided port.
 - The server serves `public/` and exposes `/api/health` and `POST /api/analyze`.
+
+For the Worker, the equivalent health endpoint is `/health` (the compatible
+`/api/health` path is also retained), and static routes are served from
+`public/`.
 
 ## Environment
 
@@ -38,6 +54,40 @@ application never substitutes fixtures in the normal live path.
 Secrets must be injected by the host runtime, never committed, logged, or sent
 to the browser. Do not expose authorization headers in diagnostics.
 
+## Cloudflare secrets and deployment credentials
+
+Set these as Cloudflare Worker secrets with Wrangler or the Cloudflare
+dashboard; they are runtime secrets, not repository files:
+
+- `GRAPH_API_KEY`
+- `OPENAI_API_KEY`
+- `OPENAI_API_URL` (configuration variable if overriding the default)
+- `OPENAI_MODEL` (configuration variable; validated value is `gpt-5.6-luna`)
+
+The compatible model transport may instead use `MODEL_API_KEY`,
+`MODEL_API_URL`, and `MODEL_NAME`.
+
+The GitHub Actions workflow uses only deployment credentials stored as GitHub
+Actions secrets: `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`. Runtime
+Graph/OpenAI secrets are not placed in that workflow.
+
+## Cloudflare commands
+
+Install dependencies with `npm ci`, then deploy the isolated temporary Worker:
+
+```bash
+npx wrangler deploy --config wrangler.toml
+```
+
+Set runtime secrets separately, for example:
+
+```bash
+npx wrangler secret put GRAPH_API_KEY
+npx wrangler secret put OPENAI_API_KEY
+```
+
+Never put secret values in shell history, source, workflow files, or logs.
+
 ## Smoke test
 
 1. Start with the required runtime variables.
@@ -59,5 +109,6 @@ existing server and avoids a framework or hosting-provider rewrite. A serverless
 host may require an adapter because this repository currently owns one small
 HTTP server rather than separate function handlers.
 
-The current local smoke test is the deployment reference. No hosted deployment
-or public demo URL has been approved or recorded yet.
+The current local smoke test is the deployment reference until the isolated
+`workers.dev` deployment passes. No hosted deployment or public demo URL has
+been approved or recorded yet.

@@ -1,10 +1,12 @@
 import { MODEL_INSTRUCTIONS, MODEL_OUTPUT_SCHEMA } from "./model-interpreter.mjs";
 
+const RUNTIME_ENV = typeof process !== "undefined" && process.env ? process.env : {};
+
 function safeMessage(status) {
   return `Model provider request failed (HTTP ${status})`;
 }
 
-export function createJsonModelGenerator({ endpoint = process.env.MODEL_API_URL, apiKey = process.env.MODEL_API_KEY, model = process.env.MODEL_NAME ?? "financial-analyst", fetchImpl = fetch, timeoutMs = 60000 } = {}) {
+export function createJsonModelGenerator({ endpoint = RUNTIME_ENV.MODEL_API_URL, apiKey = RUNTIME_ENV.MODEL_API_KEY, model = RUNTIME_ENV.MODEL_NAME ?? "financial-analyst", fetchImpl = fetch, timeoutMs = 60000 } = {}) {
   if (!endpoint || !apiKey) return null;
   return async ({ packet }) => {
     const controller = new AbortController();
@@ -44,7 +46,7 @@ export function createJsonModelGenerator({ endpoint = process.env.MODEL_API_URL,
   };
 }
 
-export function createOpenAIResponsesGenerator({ endpoint = process.env.OPENAI_API_URL ?? "https://api.openai.com/v1/responses", apiKey = process.env.OPENAI_API_KEY, model = process.env.OPENAI_MODEL ?? "gpt-5.6-luna", fetchImpl = fetch, timeoutMs = 60000 } = {}) {
+export function createOpenAIResponsesGenerator({ endpoint = RUNTIME_ENV.OPENAI_API_URL ?? "https://api.openai.com/v1/responses", apiKey = RUNTIME_ENV.OPENAI_API_KEY, model = RUNTIME_ENV.OPENAI_MODEL ?? "gpt-5.6-luna", fetchImpl = fetch, timeoutMs = 60000 } = {}) {
   if (!apiKey) return null;
   return async ({ packet }) => {
     const controller = new AbortController();
@@ -88,11 +90,11 @@ export function createOpenAIResponsesGenerator({ endpoint = process.env.OPENAI_A
 }
 
 export function createModelGenerator(options = {}) {
-  if (options.openaiApiKey ?? process.env.OPENAI_API_KEY) {
+  if (options.openaiApiKey ?? RUNTIME_ENV.OPENAI_API_KEY) {
     return createOpenAIResponsesGenerator({
-      endpoint: options.openaiEndpoint ?? process.env.OPENAI_API_URL,
-      apiKey: options.openaiApiKey ?? process.env.OPENAI_API_KEY,
-      model: options.openaiModel ?? process.env.OPENAI_MODEL,
+      endpoint: options.openaiEndpoint ?? RUNTIME_ENV.OPENAI_API_URL,
+      apiKey: options.openaiApiKey ?? RUNTIME_ENV.OPENAI_API_KEY,
+      model: options.openaiModel ?? RUNTIME_ENV.OPENAI_MODEL,
       fetchImpl: options.fetchImpl,
       timeoutMs: options.timeoutMs
     });
