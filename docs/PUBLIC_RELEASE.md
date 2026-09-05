@@ -23,12 +23,12 @@ require explicit review or a future release action.
 - [x] Deployment smoke passed for the current presentation revision
 - [x] Demo URL recorded: https://capital.agencyai.me/
 - [ ] Demo video recorded
-- [ ] Repository visibility explicitly approved
-- [ ] Final merge to `main` explicitly approved
-- [ ] Public repository verified after visibility change
+- [x] Repository visibility explicitly approved
+- [x] Final merge to `main` explicitly approved
+- [x] Public repository verified after visibility change
 - [ ] ETHGlobal submission details reviewed
 
-The repository remains private and the release candidate is not merged to
-`main`. Demo video, visibility, merge, and submission items still require
-explicit review and approval. The current presentation revision has passed
-hosted redeploy, model, fallback, desktop, mobile, and evidence checks.
+The repository is public and the release candidate is merged to `main`.
+Demo video and submission items still require explicit review and approval.
+The current presentation revision has passed hosted redeploy, model, fallback,
+desktop, mobile, and evidence checks.
