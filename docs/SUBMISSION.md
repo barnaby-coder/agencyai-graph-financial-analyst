@@ -111,14 +111,36 @@ There is one eligibility decision gate. ETHGlobal's current rules say the
 From Scratch pool requires all project-specific work to begin after the
 hackathon officially starts, and that projects built before the event do not
 qualify for partner prizes. This repository's initial setup commit is dated
-2026-09-03; the event listing shows ETHOnline 2026 beginning 2026-09-04. The
-From Scratch selection therefore requires confirmation from ETHGlobal. The
-repository was intentionally kept separate from private AgencyAI production
-repositories, so Continuity eligibility should not be claimed without a
-separate determination that this qualifies as extending an existing product.
+2026-09-03; the event listing shows ETHOnline 2026 beginning 2026-09-04. That
+commit contains only `.gitignore` and a three-line placeholder README. There
+was no code, Graph query, design asset, or working analyst before the listed
+start date; the next project-specific commit is dated 2026-09-04 at 00:31 UTC.
+The safest classification is therefore ambiguous pending organizer
+confirmation: likely Start Fresh if empty repository scaffolding is allowed,
+but not a basis to relabel the work as Continuity. The repository was
+intentionally kept separate from private AgencyAI production repositories.
 
 ETHGlobal also asks teams to disclose AI-tool use and distinguish new work from
 reused work. Include that disclosure in the final dashboard submission.
+
+## Positioning after comparator review
+
+Recent official Graph and ETHGlobal showcase material reinforces that
+standardized multi-protocol lending comparison is valuable but should not be
+presented as the main novelty. [The Graph's Lisbon recap](https://thegraph.com/blog/ethglobal-lisbon-2026-winners/)
+describes a winning standardized-schema pattern covering Aave V3, Compound
+III, and Spark, and the [Am I cooked](https://ethglobal.com/showcase/am-i-cooked-thooh)
+showcase documents that same protocol combination. [Crosscheck](https://ethglobal.com/showcase/crosscheck-0pdkb)
+also demonstrates deterministic eligibility and risk logic before model
+explanation.
+
+AgencyAI's defensible distinction is the complete auditable evidence boundary:
+standardized live observations are qualified by economic role and freshness,
+normalized deterministically, assembled into a canonical evidence object, and
+then passed to a constrained interpreter whose evidence references are checked
+before acceptance. The user can inspect the same provenance, and deterministic
+fallback remains available. The submission should say this is the product's
+focus, not that the underlying standardized-schema pattern is unprecedented.
 
 Official sources, accessed 2026-09-05 UTC:
 
@@ -138,7 +160,29 @@ model communicates a grounded comparison, return-source explanation, and
 limitations, while evidence references are validated before acceptance. The
 public repository, live demo, and 2–4 minute video satisfy the technical
 submission shape. The From Scratch timing/pool requirement remains pending
-official clarification because setup work predates the displayed event start.
+official clarification because the empty repository was created before the
+displayed event start, even though all substantive implementation followed it.
+
+### From Scratch version — use only if confirmed
+
+This was a new, empty repository at the start of the event: the only earlier
+content was `.gitignore` and a three-line placeholder README. During ETHOnline,
+the project added the live Graph data path, protocol qualification,
+deterministic financial analysis, evidence contract, grounded AI interpreter,
+fallback behavior, UI, tests, and deployment. The final app uses The Graph as
+its live source and does meaningful analysis beyond displaying raw results.
+
+### Continuity version — use only if organizers classify it this way
+
+The pre-event state was an empty repository scaffold with no functional
+analyst, Graph integration, or application code. During ETHOnline, the new
+feature set was the complete Graph-grounded financial analyst: live Aave V3,
+Compound III, and Spark Lend observations; economic-role qualification;
+deterministic comparison; canonical evidence; constrained model
+interpretation; grounding validation; fallback; UI; and deployment. The commit
+history documents that progression. This version should be used only if
+ETHGlobal confirms that the repository qualifies for Continuity despite not
+being an extension of an existing public or private product.
 
 ## Secondary bounty response
 
@@ -251,3 +295,26 @@ deterministic vertical slice, grounded model path, Cloudflare deployment, and
 release hardening as separate commits. The final submission should disclose
 the AI-assisted development process and distinguish those milestones from any
 pre-existing work.
+
+### 13. Haven't other projects already used standardized Graph lending data across Aave, Compound, and Spark?
+
+Yes. Standardized Graph data is an enabling layer, not the main novelty we
+claim. AgencyAI builds a financial-evidence layer on top: it qualifies the
+economic role of observations, normalizes them deterministically, preserves
+provenance and unknowns, and constrains the AI to that evidence.
+
+### 14. Isn't deterministic calculation before AI already a known design pattern?
+
+Yes, and that is intentional because financial state should be inspectable. Our
+distinctive product boundary is that the model receives a canonical
+Graph-derived evidence packet, its evidence references are validated, and
+deterministic interpretation remains available if the model cannot produce a
+grounded answer.
+
+### 15. What is novel about AgencyAI?
+
+The defensible distinction is the combination of standardized live Graph
+observations, explicit financial qualification, deterministic normalization,
+canonical evidence construction, constrained AI interpretation,
+evidence-reference validation, and user-verifiable provenance. The AI is useful
+without becoming authoritative over the financial state.

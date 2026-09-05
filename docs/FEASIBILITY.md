@@ -33,9 +33,13 @@ The From Scratch pool has an important eligibility condition: ETHGlobal says
 all project-specific work must begin after the hackathon officially starts and
 that projects built before the event do not qualify for partner prizes. This
 repository's initial setup commit is dated 2026-09-03, while the official event
-listing shows ETHOnline 2026 beginning 2026-09-04. The technical fit is strong,
-but the pool eligibility must be confirmed with ETHGlobal before selecting
-this partner prize. Do not describe From Scratch eligibility as confirmed.
+listing shows ETHOnline 2026 beginning 2026-09-04. That commit contains only
+`.gitignore` and a three-line placeholder README; it contains no code, Graph
+query, design asset, or working analyst. The next project-specific commit is
+dated 2026-09-04 at 00:31 UTC, after the listed start date. The safest position
+is therefore ambiguous pending organizer confirmation: likely Start Fresh if
+repository scaffolding is allowed, but not a basis to relabel the work as
+Continuity.
 
 The second strong fit is **Best Use of Composable or Standardized Graph
 Products**. The project can qualify by meaningfully building on a standardized
