@@ -37,6 +37,7 @@ test("valid model output and evidence references are accepted", () => {
 test("unknown evidence references and unsafe claims are rejected", () => {
   assert.throws(() => validateModelOutput({ ...valid(), evidenceRefs: ["missing"] }, [source.evidenceId]), /unknown evidence/);
   assert.throws(() => validateModelOutput({ ...valid(), summary: point("The APY is 4%.") }, [source.evidenceId]), /unsupported claim/);
+  assert.doesNotThrow(() => validateModelOutput({ ...valid(), summary: point("The rates are not established APY.") }, [source.evidenceId]));
   assert.throws(() => validateModelOutput({ ...valid(), observations: [{ text: "Unsupported fact", evidenceRefs: [] }] }, [source.evidenceId]), /schema/);
 });
 

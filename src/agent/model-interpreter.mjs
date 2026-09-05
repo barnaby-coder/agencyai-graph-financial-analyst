@@ -82,7 +82,7 @@ function isPoint(value) {
 }
 
 function containsUnsafeClaim(text) {
-  return /\bAPY\b/i.test(text) || /\b(incentives?\s+(are\s+)?(zero|0%))\b/i.test(text) || /\b(you should|deposit your|lend your|borrow from|trade your|execute a|sign a transaction|connect your wallet)\b/i.test(text);
+  return /\b\d+(?:\.\d+)?\s*%?\s*APY\b/i.test(text) || /\bAPY\s+(?:of|is|was|equals)\s+\d/i.test(text) || /\b(incentives?\s+(are\s+)?(zero|0%))\b/i.test(text) || /\b(you should|deposit your|lend your|borrow from|trade your|execute a|sign a transaction|connect your wallet)\b/i.test(text);
 }
 
 export function validateModelOutput(output, validEvidenceIds) {
