@@ -17,6 +17,10 @@ Use the sample question:
 The app queries current Ethereum lending markets, compares the observations,
 and lets the judge inspect the evidence behind the explanation.
 
+The Graph is the live evidence layer. Deterministic code qualifies the markets
+and calculates the comparable financial state before the AI receives anything
+to interpret.
+
 ## Why this exists
 
 Onchain financial data is transparent, but it is fragmented across protocols
@@ -47,6 +51,30 @@ answer + inspectable evidence
 The current vertical slice compares Ethereum USDC supply markets from Aave V3,
 Compound III, and Spark Lend. It is read-only: no wallet, signing, transaction,
 capital movement, or execution capability exists.
+
+## What is different about the AI
+
+A simple data-to-LLM flow asks a model to turn raw data into an answer. This
+application puts a financial evidence boundary in between:
+
+```text
+The Graph
+    ↓
+qualified observations
+    ↓
+deterministic calculations
+    ↓
+evidence object
+    ↓
+AI interpretation
+    ↓
+evidence-reference validation
+    ↓
+inspectable answer
+```
+
+The model is useful for interpretation, synthesis, and communication. It is
+not trusted to invent market state or perform opaque primary arithmetic.
 
 ## Why The Graph is essential
 

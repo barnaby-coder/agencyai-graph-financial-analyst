@@ -18,9 +18,9 @@
 
     <main>
       <section class="hero">
-        <div class="eyebrow">Onchain financial intelligence <span>•</span> live evidence</div>
+        <div class="eyebrow">Live onchain financial intelligence <span>•</span> The Graph</div>
         <h1>Make sense of<br /><span>productive capital.</span></h1>
-        <p class="hero-copy">An AI financial analyst grounded in live onchain evidence from The Graph. Ask a focused question. We’ll gather current lending evidence, calculate comparable metrics, and explain what the numbers do — and don’t — say.</p>
+        <p class="hero-copy">Ask a financial question. AgencyAI queries live lending markets through The Graph, calculates comparable evidence deterministically, then uses AI to explain what it means.</p>
         <form id="question-form" class="question-card">
           <label for="question">Ask a financial question</label>
           <textarea id="question" name="question" rows="3">I have USDC. What productive lending opportunities can we observe on Ethereum, where is the return coming from, how do the opportunities compare, and what risks should I understand?</textarea>
@@ -29,6 +29,15 @@
             <button type="submit" id="analyze-button"><span>Analyze evidence</span><span class="arrow">↗</span></button>
           </div>
         </form>
+        <div class="analysis-path" aria-label="How the answer is built">
+          <div class="path-step"><span>01</span><strong>The Graph</strong><small>Live market evidence</small></div>
+          <span class="path-arrow" aria-hidden="true">→</span>
+          <div class="path-step"><span>02</span><strong>Deterministic analysis</strong><small>Qualified metrics</small></div>
+          <span class="path-arrow" aria-hidden="true">→</span>
+          <div class="path-step"><span>03</span><strong>AI interpretation</strong><small>Grounded explanation</small></div>
+          <span class="path-arrow" aria-hidden="true">→</span>
+          <div class="path-step"><span>04</span><strong>Verified evidence</strong><small>Inspectable provenance</small></div>
+        </div>
       </section>
 
       <section id="workspace" class="workspace" aria-live="polite">

@@ -27,7 +27,7 @@ function renderMarkets(data) {
     <div class="market-top"><div><div class="protocol-name">${escapeHtml(o.protocol)}</div><div class="market-name">${escapeHtml(o.marketName)}</div></div><span class="${o.freshness}">${o.freshness}</span></div>
     <div class="rate-row"><span class="rate">${pct(o.supplyRatePct)}</span><span class="rate-label">supply rate</span></div>
     <div class="metric-line"><span>Utilization</span><b>${o.utilizationPct.toFixed(1)}%</b></div><div class="util-bar"><i style="width:${Math.min(100, o.utilizationPct)}%"></i></div>
-    <div class="metric-line"><span>Observable liquidity</span><b>${money(o.liquidityProxy)} USDC</b></div><div class="metric-line"><span>Borrow rate</span><b>${pct(o.borrowRatePct)}</b></div>
+    <div class="metric-line"><span>Observable liquidity</span><b>${money(o.liquidityProxy)} USDC</b></div><div class="metric-line"><span>Borrow rate</span><b>${pct(o.borrowRatePct)}</b></div><div class="metric-line"><span>Incentives</span><b class="unknown-value">${escapeHtml(o.incentives === "unknown" ? "Unknown" : String(o.incentives))}</b></div>
     <div class="card-foot"><span>${o.freshnessAgeSeconds == null ? "Age unavailable" : `${o.freshnessAgeSeconds}s ago`}</span><button data-evidence="${escapeHtml(o.evidence.deploymentId)}">View evidence ↗</button></div>
   </article>`).join("");
   grid.querySelectorAll("[data-evidence]").forEach((el) => el.addEventListener("click", () => openEvidence(el.dataset.evidence)));
