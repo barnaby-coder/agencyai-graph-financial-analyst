@@ -4,11 +4,12 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { runLendingAnalysis } from "./graph/client.mjs";
 import { createInterpreter } from "./agent/interpreter.mjs";
+import { createJsonModelGenerator } from "./agent/model-client.mjs";
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const publicDir = path.join(root, "..", "public");
 const port = Number(process.env.PORT ?? 4173);
-const interpreter = createInterpreter();
+const interpreter = createInterpreter({ generate: createJsonModelGenerator() });
 
 function json(response, status, body) {
   response.writeHead(status, { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" });
@@ -41,7 +42,7 @@ async function staticFile(response, requestPath) {
 const server = http.createServer(async (request, response) => {
   try {
     const url = new URL(request.url, `http://${request.headers.host ?? "localhost"}`);
-    if (request.method === "GET" && url.pathname === "/api/health") return json(response, 200, { ok: true, graphConfigured: Boolean(process.env.GRAPH_API_KEY) });
+    if (request.method === "GET" && url.pathname === "/api/health") return json(response, 200, { ok: true, graphConfigured: Boolean(process.env.GRAPH_API_KEY), modelConfigured: Boolean(process.env.MODEL_API_KEY && process.env.MODEL_API_URL) });
     if (request.method === "POST" && url.pathname === "/api/analyze") {
       if (!process.env.GRAPH_API_KEY) return json(response, 503, { error: { code: "GRAPH_CREDENTIAL_MISSING", message: "Live Graph credentials are not configured on the server." } });
       const body = await readBody(request);

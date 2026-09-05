@@ -32,7 +32,9 @@ function renderMarkets(data) {
 function renderAnswer(answer) {
   analyst.classList.remove("hidden");
   document.querySelector("#answer-title").textContent = answer.title;
-  document.querySelector("#answer-mode").textContent = answer.mode === "fallback" ? "Deterministic fallback" : "Model interpreted";
+  document.querySelector("#answer-mode").textContent = answer.mode === "fallback" ? "Deterministic fallback" : "AI interpretation";
+  document.querySelector("#answer-summary").textContent = answer.summary ?? "";
+  document.querySelector("#answer-summary").classList.toggle("hidden", !answer.summary);
   document.querySelector("#answer-observe").textContent = answer.sections.observe;
   document.querySelector("#answer-compare").textContent = answer.sections.compare;
   document.querySelector("#answer-return").textContent = answer.sections.returnSource;

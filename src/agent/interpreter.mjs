@@ -1,3 +1,17 @@
+import { buildEvidencePacket, MODEL_INSTRUCTIONS, renderModelAnswer, validateModelOutput } from "./model-interpreter.mjs";
+
+async function withTimeout(promise, timeoutMs) {
+  let timer;
+  try {
+    return await Promise.race([
+      promise,
+      new Promise((_, reject) => { timer = setTimeout(() => reject(new Error("Model interpretation timed out")), timeoutMs); })
+    ]);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 function formatPct(value) {
   return value == null ? "unknown" : `${value.toFixed(2)}%`;
 }
@@ -43,8 +57,15 @@ export function renderDeterministicFallback(analysis) {
 export function createInterpreter({ generate } = {}) {
   return {
     async interpret(analysis) {
-      if (!generate) return renderDeterministicFallback(analysis);
-      return generate({ question: analysis.question, observations: analysis.observations, comparisons: analysis.comparisons, evidence: analysis.evidence, unknowns: ["incentives"] });
+      if (!generate || analysis.observations.some((observation) => observation.freshness !== "fresh")) return renderDeterministicFallback(analysis);
+      const packet = buildEvidencePacket(analysis);
+      const validEvidenceIds = packet.evidence.map((source) => source.id);
+      try {
+        const generated = await withTimeout(generate({ packet, systemPrompt: MODEL_INSTRUCTIONS }), 16_000);
+        return renderModelAnswer(validateModelOutput(generated, validEvidenceIds));
+      } catch {
+        return renderDeterministicFallback(analysis);
+      }
     }
   };
 }

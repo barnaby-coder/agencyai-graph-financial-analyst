@@ -176,16 +176,18 @@ Those findings are useful outcomes in their own right.
 
 ## Current status
 
-The current bounded vertical slice is implemented on the review branch.
+The current bounded vertical slice is implemented on the model-backed analyst
+branch. The repository remains private while the implementation is reviewed.
 
 ## Current vertical slice
 
 The app asks one Ethereum + USDC lending question and compares live Graph
 observations from Aave V3, Compound III, and Spark Lend. It validates the
 market role, calculates supply, borrows, utilization, rates, liquidity proxy,
-and freshness in code, then presents a grounded fallback explanation with an
-evidence view. A model adapter boundary is available, but no model credential
-is required for the demo.
+and freshness in code, then presents an evidence-backed explanation with an
+evidence view. When configured, a server-side model interprets a compact,
+structured evidence packet. Without a model credential, the deterministic
+fallback remains the complete answer path.
 
 Rates are shown as neutral supply/borrow percentage-point fields, not APY.
 Incentives remain `unknown` when the qualified source does not expose them.
@@ -200,6 +202,23 @@ GRAPH_API_KEY=<runtime-secret> npm start
 
 Open http://127.0.0.1:4173. The key is server-only and must never be committed
 or sent to the browser. `npm test` runs the credential-free unit tests.
+
+Optional model interpretation uses a server-side JSON model endpoint:
+
+```bash
+MODEL_API_URL=<approved-model-endpoint> MODEL_API_KEY=<runtime-secret> npm start
+```
+
+`MODEL_NAME` is optional. The endpoint receives `{ model, system, input,
+responseFormat }` and must return the documented structured model output (or a
+JSON string in `output_text`); it never receives raw Graph responses. Missing
+model configuration, provider failure, invalid output, or unresolved evidence
+references selects the deterministic fallback.
+
+The model explains deterministic results; it does not calculate metrics,
+qualify markets, decide freshness, or recommend execution. Rates remain neutral
+percentage-point fields rather than APY, and incentives remain unknown when the
+qualified Graph source does not expose them.
 
 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the implementation
 boundary and [docs/FEASIBILITY.md](docs/FEASIBILITY.md) for live validation

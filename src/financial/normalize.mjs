@@ -71,9 +71,11 @@ export function normalizeMarket({ protocol, config, meta, protocolData, captured
     freshness,
     freshnessAgeSeconds: freshnessAgeSeconds(blockTimestamp, capturedAt),
     evidence: {
+      evidenceId: `${protocol}:${market.id}`,
       claim: `${protocol} Ethereum USDC lending market observation`,
       protocol,
       market: market.id,
+      economicRole: config.economicRole,
       source: "The Graph standardized lending Subgraph",
       subgraphId: config.subgraphId,
       deploymentId: config.deploymentId,

@@ -27,14 +27,33 @@ credential.
 
 `src/financial/normalize.mjs` owns scaling, utilization, liquidity proxy,
 freshness, variable-rate selection, market-role qualification, and evidence
-construction. The fallback interpreter in `src/agent/interpreter.mjs` only
-turns those results into sections and caveats. A future model adapter can be
-injected behind `createInterpreter`; it receives facts and unknowns but does
-not own primary arithmetic or execution decisions.
+construction. `src/agent/model-interpreter.mjs` builds a compact packet from
+those deterministic results. It excludes raw Graph responses and supplies
+stable evidence IDs before model invocation.
+
+`src/agent/interpreter.mjs` accepts a provider-neutral `generate` function. A
+configured JSON model endpoint receives the packet and returns a structured
+summary plus evidence-backed points. The application validates the output
+shape, rejects unknown evidence IDs and unsupported APY/execution claims, and
+then renders the answer. Any missing model configuration, timeout, provider
+failure, malformed output, or grounding failure uses the deterministic
+fallback. The model never owns arithmetic, market qualification, freshness,
+or execution decisions.
+
+The optional HTTP adapter is deliberately transport-thin: it sends a JSON
+request containing the model name, system instructions, compact `input`
+packet, and response schema. The endpoint may return the object directly or as
+JSON text in `output_text`. This keeps provider selection outside the financial
+analysis contract and avoids adding an agent framework.
 
 Rates are named `supplyRatePct` and `borrowRatePct`, because the standardized
 source is qualified as annualized percentage-point / APR-like data rather than
 silently labeled APY. Incentives remain the literal value `unknown`.
+
+The optional model settings are `MODEL_API_URL`, `MODEL_API_KEY`, and
+`MODEL_NAME`; they are read only on the server. `MODEL_API_KEY` is never
+returned to the browser or included in model input beyond the transport
+authorization header.
 
 ## Freshness and failure behavior
 
