@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Evidence-backed Ethereum lending intelligence powered by The Graph." />
+    <title>AgencyAI · Graph Financial Analyst</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="AgencyAI Graph Financial Analyst home">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>AgencyAI <em>/</em> Graph Financial Analyst</span>
+      </a>
+      <div class="topbar-meta"><span class="status-dot"></span> Read-only intelligence <span class="divider"></span> Ethereum mainnet</div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="eyebrow">Onchain financial intelligence <span>•</span> live evidence</div>
+        <h1>Make sense of<br /><span>productive capital.</span></h1>
+        <p class="hero-copy">Ask a focused question. We’ll gather current lending evidence from The Graph, calculate the comparable metrics, and explain what the numbers do — and don’t — say.</p>
+        <form id="question-form" class="question-card">
+          <label for="question">Ask a financial question</label>
+          <textarea id="question" name="question" rows="3">I have USDC. What productive lending opportunities can we observe on Ethereum, where is the return coming from, how do the opportunities compare, and what risks should I understand?</textarea>
+          <div class="question-footer">
+            <span class="input-note"><span class="lock" aria-hidden="true">⌁</span> Live Graph data · no wallet connection</span>
+            <button type="submit" id="analyze-button"><span>Analyze evidence</span><span class="arrow">↗</span></button>
+          </div>
+        </form>
+      </section>
+
+      <section id="workspace" class="workspace" aria-live="polite">
+        <div class="section-heading">
+          <div><div class="eyebrow">The evidence desk</div><h2>What the market says now</h2></div>
+          <div id="capture-meta" class="capture-meta">Waiting for an analysis</div>
+        </div>
+        <div id="notice" class="notice hidden" role="status"></div>
+        <div id="market-grid" class="market-grid empty-state"><div class="empty-inner"><span class="empty-icon">◎</span><span>Run an analysis to load qualified Graph observations.</span></div></div>
+
+        <div id="analyst-shell" class="analyst-shell hidden">
+          <div class="analyst-heading"><div><div class="eyebrow">Analyst interpretation</div><h2 id="answer-title">What we observe</h2></div><span class="fallback-badge" id="answer-mode">Evidence-first</span></div>
+          <div class="answer-grid">
+            <article><span class="answer-kicker">01 / Observe</span><p id="answer-observe"></p></article>
+            <article><span class="answer-kicker">02 / Compare</span><p id="answer-compare"></p></article>
+            <article><span class="answer-kicker">03 / Return source</span><p id="answer-return"></p></article>
+            <article class="risk-article"><span class="answer-kicker">04 / Risks &amp; limits</span><ul id="answer-risks"></ul></article>
+          </div>
+        </div>
+
+        <div id="evidence-shell" class="evidence-shell hidden">
+          <div class="section-heading evidence-heading"><div><div class="eyebrow">Traceability</div><h2>Inspect the evidence</h2></div><span class="evidence-count" id="evidence-count"></span></div>
+          <div id="evidence-list" class="evidence-list"></div>
+        </div>
+      </section>
+    </main>
+    <footer><span>AgencyAI Graph Financial Analyst</span><span>Data interpretation, not execution.</span></footer>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
