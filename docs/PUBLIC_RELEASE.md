@@ -19,8 +19,8 @@ require explicit review or a future release action.
 - [x] Deterministic fallback passed
 - [x] `npm test` passed
 - [x] Local start/health smoke passed
-- [ ] Deployment smoke passed on the selected host
-- [ ] Demo URL recorded
+- [x] Deployment smoke passed on the selected host
+- [x] Demo URL recorded: https://capital.agencyai.me/
 - [ ] Demo video recorded
 - [ ] Repository visibility explicitly approved
 - [ ] Final merge to `main` explicitly approved
@@ -28,5 +28,5 @@ require explicit review or a future release action.
 - [ ] ETHGlobal submission details reviewed
 
 The repository remains private and the release candidate is not merged to
-`main`. Do not check deployment, URL, video, visibility, merge, or submission
-items until they have actually occurred and been reviewed.
+`main`. Demo video, visibility, merge, and submission items still require
+explicit review and approval.

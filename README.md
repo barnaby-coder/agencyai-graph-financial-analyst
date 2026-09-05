@@ -4,7 +4,11 @@ An AI financial analyst grounded in live onchain evidence from The Graph.
 
 ## Demo
 
-**Deployed demo:** _to be recorded after deployment approval_
+**Deployed demo:** [capital.agencyai.me](https://capital.agencyai.me/)
+
+The demo is currently hosted as a dedicated Cloudflare Worker. The temporary
+validation host is
+[agencyai-graph-financial-analyst.finneigan-barnaby.workers.dev](https://agencyai-graph-financial-analyst.finneigan-barnaby.workers.dev/).
 
 Use the sample question:
 
@@ -133,6 +137,17 @@ selects OpenAI when `OPENAI_API_KEY` is present. Never commit credentials.
 
 Health is available at `/api/health`. The primary analysis request is
 `POST /api/analyze` with `{ "question": "..." }`.
+
+## Deployment
+
+The application has its own Cloudflare Worker and GitHub Actions deployment
+workflow. Static assets are served by the Worker and Graph/OpenAI requests
+remain server-side. Worker runtime secrets use the same environment variable
+names shown above; deployment credentials are held separately as GitHub
+Actions secrets. The production-facing demo URL is
+[capital.agencyai.me](https://capital.agencyai.me/). The existing
+[agencyai.me](https://agencyai.me/) landing page is deployed separately and
+is not managed by this repository.
 
 ## Tests
 

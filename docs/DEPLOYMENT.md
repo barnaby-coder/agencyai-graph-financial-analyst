@@ -8,9 +8,9 @@ financial, evidence, and model modules. Cloudflare Workers Static Assets serves
 `public/` through the `ASSETS` binding; the Worker is invoked first for API and
 health paths. No financial or model logic is duplicated for the Worker.
 
-The deployment configuration is in `wrangler.toml`. It deliberately enables
-`workers.dev` only; the custom domain is bound only after temporary-host
-validation passes.
+The deployment configuration is in `wrangler.toml`. It enables the isolated
+`workers.dev` host, and the custom domain was bound only after temporary-host
+validation passed.
 
 ## Runtime
 
@@ -100,15 +100,30 @@ Never put secret values in shell history, source, workflow files, or logs.
 6. Repeat in a process without model variables and confirm HTTP 200,
    `status: "ready"`, and `answer.mode: "fallback"`.
 
+## Validated hosted deployment
+
+On 2026-09-05, the Worker was validated on the temporary host:
+
+- URL: `https://agencyai-graph-financial-analyst.finneigan-barnaby.workers.dev/`
+- Result: HTTP 200, `status: "ready"`, `answer.mode: "model"`.
+- Graph block: `25912018`; all three observations were fresh and had no
+  indexing errors; total request time was approximately 12.4 seconds.
+
+After that validation, the Worker was attached to:
+
+- URL: `https://capital.agencyai.me/`
+- Result: HTTP 200, `status: "ready"`, `answer.mode: "model"`.
+- Graph block: `25912061`; all three observations were fresh and had no
+  indexing errors; the final timed request took approximately 11.0 seconds.
+
+The `agencyai.me` root was checked before and after the custom-domain change
+and remained unchanged. This repository does not manage that root deployment.
+
 ## Recommended deployment approach
 
-Use a simple long-running Node service or VM process with a reverse proxy,
-runtime secret variables, HTTPS, and a host-provided `PORT`. Set `HOST` to
-`0.0.0.0` when the platform requires non-loopback binding. This preserves the
-existing server and avoids a framework or hosting-provider rewrite. A serverless
-host may require an adapter because this repository currently owns one small
-HTTP server rather than separate function handlers.
-
-The current local smoke test is the deployment reference until the isolated
-`workers.dev` deployment passes. No hosted deployment or public demo URL has
-been approved or recorded yet.
+For the current release candidate, use the dedicated Cloudflare Worker. It
+serves the static UI and handles `/health` and `/api/analyze` through the
+shared runtime-independent handler. Local Node remains available for
+development and fallback validation. The repository workflow runs tests and
+deploys the Worker when changes reach `main`; deployment still requires an
+explicit merge approval.
